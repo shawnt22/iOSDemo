@@ -33,7 +33,6 @@
 		9C6B66F915DDF25F001905AE /* SSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSplitViewController.m; sourceTree = "<group>"; };
 		9C6B66FE15DDF297001905AE /* SSplitContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSplitContentViewController.h; sourceTree = "<group>"; };
 		9C6B66FF15DDF297001905AE /* SSplitContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSplitContentViewController.m; sourceTree = "<group>"; };
-		9C6B670515DE310B001905AE /* SSplitContentViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSplitContentViewDelegate.h; sourceTree = "<group>"; };
 		9C6B670A15DE464B001905AE /* SSplitContentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSplitContentDelegate.h; sourceTree = "<group>"; };
 		9C6B670B15DE464B001905AE /* SSplitContentDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSplitContentDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,7 +88,6 @@
 				9C6B66F915DDF25F001905AE /* SSplitViewController.m */,
 				9C6B66FE15DDF297001905AE /* SSplitContentViewController.h */,
 				9C6B66FF15DDF297001905AE /* SSplitContentViewController.m */,
-				9C6B670515DE310B001905AE /* SSplitContentViewDelegate.h */,
 				9C6B670A15DE464B001905AE /* SSplitContentDelegate.h */,
 				9C6B670B15DE464B001905AE /* SSplitContentDelegate.m */,
 			);
