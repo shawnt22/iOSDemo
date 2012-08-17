@@ -24,6 +24,8 @@
     [self.window makeKeyAndVisible];
     
     
+    SSplitContentViewController *_scvc = [[SSplitContentViewController alloc] init];
+    [self.window addSubview:_scvc.view];
     
     
     return YES;
