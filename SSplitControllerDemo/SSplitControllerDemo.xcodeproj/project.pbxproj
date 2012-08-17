@@ -259,6 +259,7 @@
 				9C6B66BC15DDE217001905AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
