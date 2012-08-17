@@ -1,0 +1,266 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9C6B66A715DDE217001905AE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6B66A615DDE217001905AE /* UIKit.framework */; };
+		9C6B66A915DDE217001905AE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6B66A815DDE217001905AE /* Foundation.framework */; };
+		9C6B66AB15DDE217001905AE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6B66AA15DDE217001905AE /* CoreGraphics.framework */; };
+		9C6B66B115DDE217001905AE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C6B66AF15DDE217001905AE /* InfoPlist.strings */; };
+		9C6B66B315DDE217001905AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B66B215DDE217001905AE /* main.m */; };
+		9C6B66B715DDE217001905AE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B66B615DDE217001905AE /* AppDelegate.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9C6B66A215DDE217001905AE /* SSplitControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SSplitControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C6B66A615DDE217001905AE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9C6B66A815DDE217001905AE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9C6B66AA15DDE217001905AE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9C6B66AE15DDE217001905AE /* SSplitControllerDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SSplitControllerDemo-Info.plist"; sourceTree = "<group>"; };
+		9C6B66B015DDE217001905AE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9C6B66B215DDE217001905AE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9C6B66B415DDE217001905AE /* SSplitControllerDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SSplitControllerDemo-Prefix.pch"; sourceTree = "<group>"; };
+		9C6B66B515DDE217001905AE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9C6B66B615DDE217001905AE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9C6B669F15DDE217001905AE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C6B66A715DDE217001905AE /* UIKit.framework in Frameworks */,
+				9C6B66A915DDE217001905AE /* Foundation.framework in Frameworks */,
+				9C6B66AB15DDE217001905AE /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9C6B669715DDE217001905AE = {
+			isa = PBXGroup;
+			children = (
+				9C6B66AC15DDE217001905AE /* SSplitControllerDemo */,
+				9C6B66A515DDE217001905AE /* Frameworks */,
+				9C6B66A315DDE217001905AE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9C6B66A315DDE217001905AE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C6B66A215DDE217001905AE /* SSplitControllerDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9C6B66A515DDE217001905AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9C6B66A615DDE217001905AE /* UIKit.framework */,
+				9C6B66A815DDE217001905AE /* Foundation.framework */,
+				9C6B66AA15DDE217001905AE /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9C6B66AC15DDE217001905AE /* SSplitControllerDemo */ = {
+			isa = PBXGroup;
+			children = (
+				9C6B66B515DDE217001905AE /* AppDelegate.h */,
+				9C6B66B615DDE217001905AE /* AppDelegate.m */,
+				9C6B66AD15DDE217001905AE /* Supporting Files */,
+			);
+			path = SSplitControllerDemo;
+			sourceTree = "<group>";
+		};
+		9C6B66AD15DDE217001905AE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C6B66AE15DDE217001905AE /* SSplitControllerDemo-Info.plist */,
+				9C6B66AF15DDE217001905AE /* InfoPlist.strings */,
+				9C6B66B215DDE217001905AE /* main.m */,
+				9C6B66B415DDE217001905AE /* SSplitControllerDemo-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9C6B66A115DDE217001905AE /* SSplitControllerDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C6B66BA15DDE217001905AE /* Build configuration list for PBXNativeTarget "SSplitControllerDemo" */;
+			buildPhases = (
+				9C6B669E15DDE217001905AE /* Sources */,
+				9C6B669F15DDE217001905AE /* Frameworks */,
+				9C6B66A015DDE217001905AE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SSplitControllerDemo;
+			productName = SSplitControllerDemo;
+			productReference = 9C6B66A215DDE217001905AE /* SSplitControllerDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C6B669915DDE217001905AE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "滕 松";
+			};
+			buildConfigurationList = 9C6B669C15DDE217001905AE /* Build configuration list for PBXProject "SSplitControllerDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9C6B669715DDE217001905AE;
+			productRefGroup = 9C6B66A315DDE217001905AE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9C6B66A115DDE217001905AE /* SSplitControllerDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9C6B66A015DDE217001905AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C6B66B115DDE217001905AE /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9C6B669E15DDE217001905AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C6B66B315DDE217001905AE /* main.m in Sources */,
+				9C6B66B715DDE217001905AE /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9C6B66AF15DDE217001905AE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C6B66B015DDE217001905AE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9C6B66B815DDE217001905AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9C6B66B915DDE217001905AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9C6B66BB15DDE217001905AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SSplitControllerDemo/SSplitControllerDemo-Prefix.pch";
+				INFOPLIST_FILE = "SSplitControllerDemo/SSplitControllerDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9C6B66BC15DDE217001905AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SSplitControllerDemo/SSplitControllerDemo-Prefix.pch";
+				INFOPLIST_FILE = "SSplitControllerDemo/SSplitControllerDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9C6B669C15DDE217001905AE /* Build configuration list for PBXProject "SSplitControllerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C6B66B815DDE217001905AE /* Debug */,
+				9C6B66B915DDE217001905AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C6B66BA15DDE217001905AE /* Build configuration list for PBXNativeTarget "SSplitControllerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C6B66BB15DDE217001905AE /* Debug */,
+				9C6B66BC15DDE217001905AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9C6B669915DDE217001905AE /* Project object */;
+}
