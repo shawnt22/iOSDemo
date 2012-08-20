@@ -32,18 +32,18 @@
     self.view.backgroundColor = [UIColor greenColor];
     
     //  view
-    TestView *_v = [[TestView alloc] initWithFrame:self.view.bounds];
-    _v.backgroundColor = self.view.backgroundColor;
-    _v.splitDelegate = self;
-    [self.view addSubview:_v];
-    [_v release];
+//    TestView *_v = [[TestView alloc] initWithFrame:self.view.bounds];
+//    _v.backgroundColor = self.view.backgroundColor;
+//    _v.splitDelegate = self;
+//    [self.view addSubview:_v];
+//    [_v release];
     
 //    //  table
-//    TestTableView *_table = [[TestTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-//    _table.backgroundColor = self.view.backgroundColor;
-//    _table.splitDelegate = self;
-//    [self.view addSubview:_table];
-//    [_table release];
+    TestTableView *_table = [[TestTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    _table.backgroundColor = self.view.backgroundColor;
+    _table.splitDelegate = self;
+    [self.view addSubview:_table];
+    [_table release];
 
 //    //  webview
 //    TestWebView *_web = [[TestWebView alloc] initWithFrame:self.view.bounds];
@@ -61,17 +61,32 @@
 }
 
 #pragma mark split delegate
-- (void)splitContentView:(TestView *)splitContentView beginTouch:(UITouch *)touch {
-    NSLog(@"begin touch : %@", touch);
+- (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView {
+    return YES;
 }
-- (void)splitContentView:(TestView *)splitContentView moveTouch:(UITouch *)touch {
-    NSLog(@"move touch : %@", touch);
+- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView beginedGesture:(UIGestureRecognizer *)gesture {
+    NSLog(@"begin gesture : %@", gesture);
 }
-- (void)splitContentView:(TestView *)splitContentView endTouch:(UITouch *)touch {
-    NSLog(@"end touch : %@", touch);
+- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView endedGesture:(UIGestureRecognizer *)gesture {
+    NSLog(@"end gesture : %@", gesture);
+    if ([splitContentView isKindOfClass:[UITableView class]]) {
+        UITableView *_table = (UITableView *)splitContentView;
+        _table.scrollEnabled = YES;
+    }
 }
-- (void)splitContentView:(TestView *)splitContentView receiveSwipeGesture:(UISwipeGestureRecognizer *)swipeGesture {
-    NSLog(@"swip gesture : %@", swipeGesture.direction == UISwipeGestureRecognizerDirectionRight ? @"right" : @"left");
+- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView changedGesture:(UIGestureRecognizer *)gesture {
+    NSLog(@"change gesture : %@", gesture);
+    if ([splitContentView isKindOfClass:[UITableView class]]) {
+        UITableView *_table = (UITableView *)splitContentView;
+        _table.scrollEnabled = NO;
+    }
+}
+- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView canceledGesture:(UIGestureRecognizer *)gesture {
+    NSLog(@"cancel gesture : %@", gesture);
+    if ([splitContentView isKindOfClass:[UITableView class]]) {
+        UITableView *_table = (UITableView *)splitContentView;
+        _table.scrollEnabled = YES;
+    }
 }
 
 @end
@@ -80,91 +95,88 @@
 #pragma mark - tset views
 
 @implementation TestView
-@synthesize splitDelegate, beginTouch, moveTouch;
+@synthesize splitDelegate, beginGesture, moveGesture;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.beginTouch = nil;
-        self.moveTouch = nil;
+        self.beginGesture = nil;
+        self.moveGesture = nil;
         
-        [self addSwipeGesture];
+        [self addGestures];
     }
     return self;
 }
 - (void)dealloc {
-    self.beginTouch = nil;
-    self.moveTouch = nil;
+    self.beginGesture = nil;
+    self.moveGesture = nil;
     [super dealloc];
 }
 
-- (void)addSwipeGesture {
-    [SSplitContentUtil addSwipGestureWithContent:self];
+- (void)addGestures {
+    [SSplitContentUtil addGesturesWithContent:self];
 }
-- (void)responseSwipeGesture:(UISwipeGestureRecognizer *)gesture {
-    [SSplitContentUtil responseSwipeGesture:gesture Content:self];
+- (void)responseGesture:(UIGestureRecognizer *)gesture {
+    [SSplitContentUtil responseGesture:gesture Content:self];
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return [SSplitContentUtil gestureRecognizer:gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:otherGestureRecognizer Content:self];
-}
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesBegan:touches withEvent:event Content:self];
-}
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesEnded:touches withEvent:event Content:self];
-}
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesMoved:touches withEvent:event Content:self];
-}
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesCancelled:touches withEvent:event Content:self];
 }
 
 @end
 
 
 @implementation TestTableView
-@synthesize splitDelegate, beginTouch, moveTouch;
+@synthesize splitDelegate, beginGesture, moveGesture;
+@synthesize shouldSplit;
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
     if (self) {
+        self.shouldSplit = YES;
+        
         self.delegate = self;
         self.dataSource = self;
         
-        self.beginTouch = nil;
-        self.moveTouch = nil;
+        self.beginGesture = nil;
+        self.moveGesture = nil;
         
-        //[self addSwipeGesture];
+        [self addGestures];
     }
     return self;
 }
 - (void)dealloc {
-    self.beginTouch = nil;
-    self.moveTouch = nil;
+    self.beginGesture = nil;
+    self.moveGesture = nil;
     [super dealloc];
 }
 
-- (void)addSwipeGesture {
-    [SSplitContentUtil addSwipGestureWithContent:self];
+- (void)addGestures {
+    [SSplitContentUtil addGesturesWithContent:self];
 }
-- (void)responseSwipeGesture:(UISwipeGestureRecognizer *)gesture {
-    [SSplitContentUtil responseSwipeGesture:gesture Content:self];
+- (void)responseGesture:(UIGestureRecognizer *)gesture {
+    [SSplitContentUtil responseGesture:gesture Content:self];
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return [SSplitContentUtil gestureRecognizer:gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:otherGestureRecognizer Content:self];
 }
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesBegan:touches withEvent:event Content:self];
+- (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView {
+    return self.shouldSplit;
 }
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesEnded:touches withEvent:event Content:self];
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSLog(@"did scroll");
+    self.shouldSplit = NO;
 }
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesMoved:touches withEvent:event Content:self];
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    NSLog(@"end dragging : %d", decelerate);
+    if (!decelerate) {
+        self.shouldSplit = YES;
+    }
 }
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    [SSplitContentUtil touchesCancelled:touches withEvent:event Content:self];
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSLog(@"end decelerate");
+    self.shouldSplit = YES;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -186,24 +198,29 @@
 @end
 
 @implementation TestWebView
-@synthesize splitDelegate;
+@synthesize splitDelegate, beginGesture, moveGesture;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self addSwipeGesture];
+        self.beginGesture = nil;
+        self.moveGesture = nil;
+        
+        [self addGestures];
     }
     return self;
 }
 - (void)dealloc {
+    self.beginGesture = nil;
+    self.moveGesture = nil;
     [super dealloc];
 }
 
-- (void)addSwipeGesture {
-    [SSplitContentUtil addSwipGestureWithContent:self];
+- (void)addGestures {
+    [SSplitContentUtil addGesturesWithContent:self];
 }
-- (void)responseSwipeGesture:(UISwipeGestureRecognizer *)gesture {
-    [SSplitContentUtil responseSwipeGesture:gesture Content:self];
+- (void)responseGesture:(UIGestureRecognizer *)gesture {
+    [SSplitContentUtil responseGesture:gesture Content:self];
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return [SSplitContentUtil gestureRecognizer:gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:otherGestureRecognizer Content:self];
@@ -212,26 +229,31 @@
 @end
 
 @implementation TestScrolView
-@synthesize splitDelegate;
+@synthesize splitDelegate, beginGesture, moveGesture;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.contentSize = CGSizeMake(self.bounds.size.width*2, self.bounds.size.height*2);
+        self.beginGesture = nil;
+        self.moveGesture = nil;
         
-        [self addSwipeGesture];
+        [self addGestures];
+        
+        self.contentSize = CGSizeMake(self.bounds.size.width*2, self.bounds.size.height*2);
     }
     return self;
 }
 - (void)dealloc {
+    self.beginGesture = nil;
+    self.moveGesture = nil;
     [super dealloc];
 }
 
-- (void)addSwipeGesture {
-    [SSplitContentUtil addSwipGestureWithContent:self];
+- (void)addGestures {
+    [SSplitContentUtil addGesturesWithContent:self];
 }
-- (void)responseSwipeGesture:(UISwipeGestureRecognizer *)gesture {
-    [SSplitContentUtil responseSwipeGesture:gesture Content:self];
+- (void)responseGesture:(UIGestureRecognizer *)gesture {
+    [SSplitContentUtil responseGesture:gesture Content:self];
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return [SSplitContentUtil gestureRecognizer:gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:otherGestureRecognizer Content:self];
