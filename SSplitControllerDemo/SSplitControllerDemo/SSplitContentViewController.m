@@ -9,15 +9,16 @@
 #import "SSplitContentViewController.h"
 
 @interface SSplitContentViewController()
-
+@property (nonatomic, assign) TestTableView *testTable;
 @end
 @implementation SSplitContentViewController
+@synthesize splitControllerDelegate, beginGesture, moveGesture, isSplitOpenning;
+@synthesize testTable;
 
 #pragma mark init & dealloc
 - (id)init {
     self = [super init];
     if (self) {
-        
     }
     return self;
 }
@@ -25,11 +26,22 @@
     [super dealloc];
 }
 
+#pragma mark split controller protocol
+- (UIGestureRecognizer *)beginGesture {
+    return self.testTable.beginGesture;
+}
+- (UIGestureRecognizer *)moveGesture {
+    return self.testTable.moveGesture;
+}
+- (UINavigationController<SSplitControllerProtocol> *)splitNavigationController {
+    return [SSplitContentUtil splitNavigationControllerWithSplitController:self];
+}
+
 #pragma mark controller delegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor greenColor];
+    self.view.backgroundColor = [UIColor blueColor];
     
     //  view
 //    TestView *_v = [[TestView alloc] initWithFrame:self.view.bounds];
@@ -43,6 +55,7 @@
     _table.backgroundColor = self.view.backgroundColor;
     _table.splitDelegate = self;
     [self.view addSubview:_table];
+    self.testTable = _table;
     [_table release];
 
 //    //  webview
@@ -61,32 +74,72 @@
 }
 
 #pragma mark split delegate
-- (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView {
-    return YES;
-}
 - (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView beginedGesture:(UIGestureRecognizer *)gesture {
-    NSLog(@"begin gesture : %@", gesture);
+    if (self.splitControllerDelegate && [self.splitControllerDelegate respondsToSelector:@selector(splitController:beginedGesutre:)]) {
+        [self.splitControllerDelegate splitController:self beginedGesutre:gesture];
+    }
 }
 - (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView endedGesture:(UIGestureRecognizer *)gesture {
-    NSLog(@"end gesture : %@", gesture);
+    if (self.splitControllerDelegate && [self.splitControllerDelegate respondsToSelector:@selector(splitController:beginedGesutre:)]) {
+        [self.splitControllerDelegate splitController:self beginedGesutre:gesture];
+    }
+    
     if ([splitContentView isKindOfClass:[UITableView class]]) {
         UITableView *_table = (UITableView *)splitContentView;
         _table.scrollEnabled = YES;
     }
 }
 - (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView changedGesture:(UIGestureRecognizer *)gesture {
-    NSLog(@"change gesture : %@", gesture);
+    if (self.splitControllerDelegate && [self.splitControllerDelegate respondsToSelector:@selector(splitController:beginedGesutre:)]) {
+        [self.splitControllerDelegate splitController:self beginedGesutre:gesture];
+    }
     if ([splitContentView isKindOfClass:[UITableView class]]) {
         UITableView *_table = (UITableView *)splitContentView;
         _table.scrollEnabled = NO;
     }
 }
 - (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView canceledGesture:(UIGestureRecognizer *)gesture {
-    NSLog(@"cancel gesture : %@", gesture);
+    if (self.splitControllerDelegate && [self.splitControllerDelegate respondsToSelector:@selector(splitController:beginedGesutre:)]) {
+        [self.splitControllerDelegate splitController:self beginedGesutre:gesture];
+    }
     if ([splitContentView isKindOfClass:[UITableView class]]) {
         UITableView *_table = (UITableView *)splitContentView;
         _table.scrollEnabled = YES;
     }
+}
+
+@end
+
+
+@implementation SSplitNavigationContentViewController
+@synthesize splitControllerDelegate, beginGesture, moveGesture, isSplitOpenning;
+
+- (UIViewController<SSplitContentViewDelegate, SSplitControllerProtocol> *)splitRootViewController {
+    if ([self.viewControllers count] > 0) {
+        UIViewController *_root = [self.viewControllers objectAtIndex:0];
+        if ([_root conformsToProtocol:@protocol(SSplitControllerProtocol)] && [_root conformsToProtocol:@protocol(SSplitContentViewDelegate)]) {
+            return (UIViewController<SSplitContentViewDelegate, SSplitControllerProtocol> *)_root;
+        }
+    }
+    return nil;
+}
+- (void)setSplitControllerDelegate:(id<SSPlitControllerDelegate>)asplitControllerDelegate {
+    self.splitRootViewController.splitControllerDelegate = asplitControllerDelegate;
+}
+- (id<SSPlitControllerDelegate>)splitControllerDelegate {
+    return self.splitRootViewController.splitControllerDelegate;
+}
+- (UIGestureRecognizer *)beginGesture {
+    return self.splitRootViewController.beginGesture;
+}
+- (UIGestureRecognizer *)moveGesture {
+    return self.splitRootViewController.moveGesture;
+}
+- (void)setIsSplitOpenning:(BOOL)aisSplitOpenning {
+    self.splitRootViewController.isSplitOpenning = aisSplitOpenning;
+}
+- (BOOL)isSplitOpenning {
+    return self.splitRootViewController.isSplitOpenning;
 }
 
 @end
@@ -163,7 +216,6 @@
 - (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView {
     return self.shouldSplit;
 }
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSLog(@"did scroll");
     self.shouldSplit = NO;

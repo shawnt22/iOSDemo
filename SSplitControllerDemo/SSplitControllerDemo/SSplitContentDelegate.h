@@ -17,10 +17,23 @@
 @optional
 //- (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView;
 
-- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView beginedGesture:(UIGestureRecognizer *)gesture;
-- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView endedGesture:(UIGestureRecognizer *)gesture;
-- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView changedGesture:(UIGestureRecognizer *)gesture;
-- (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView canceledGesture:(UIGestureRecognizer *)gesture;
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView beginedGesture:(UIGestureRecognizer *)gesture;
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView endedGesture:(UIGestureRecognizer *)gesture;
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView changedGesture:(UIGestureRecognizer *)gesture;
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView canceledGesture:(UIGestureRecognizer *)gesture;
+
+@end
+
+/*
+ SplitController Delegate
+ */
+@protocol SSplitControllerProtocol;
+@protocol SSPlitControllerDelegate <NSObject>
+@optional
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController beginedGesutre:(UIGestureRecognizer *)gesture;
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController endedGesutre:(UIGestureRecognizer *)gesture;
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController changedGesutre:(UIGestureRecognizer *)gesture;
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController canceledGesutre:(UIGestureRecognizer *)gesture;
 
 @end
 
@@ -41,6 +54,21 @@
 
 @end
 
+/*
+ SplitController Protocol
+ */
+@protocol SSplitControllerProtocol <NSObject>
+@required
+@property (nonatomic, readonly) UIGestureRecognizer *beginGesture;
+@property (nonatomic, readonly) UIGestureRecognizer *moveGesture;
+@property (nonatomic, assign) BOOL isSplitOpenning;
+
+@optional
+@property (nonatomic, assign) id<SSPlitControllerDelegate> splitControllerDelegate;
+- (UINavigationController<SSplitControllerProtocol> *)splitNavigationController;
+
+@end
+
 #pragma mark -
 /*
  SplitContentView Util
@@ -50,5 +78,6 @@
 + (void)addGesturesWithContent:(UIView<SSplitContentViewProtocol> *)content;
 + (void)responseGesture:(UIGestureRecognizer *)gesture Content:(UIView<SSplitContentViewProtocol> *)content;
 + (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer Content:(UIView<SSplitContentViewProtocol> *)content;
++ (UINavigationController<SSplitControllerProtocol> *)splitNavigationControllerWithSplitController:(UIViewController<SSplitControllerProtocol> *)splitController;
 
 @end

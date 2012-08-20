@@ -9,18 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "SSplitContentViewController.h"
 
-@class SSplitViewController;
-@protocol SSplitViewControllerDelegate <NSObject>
-@optional
-
-@end
-
 @class SSplitContentViewController;
-@interface SSplitViewController : UIViewController
-@property (nonatomic, retain) NSArray *splitContentViewControllers;
-@property (nonatomic, assign) id<SSplitViewControllerDelegate> splitDelegate;
+@interface SSplitViewController : UIViewController <SSPlitControllerDelegate, UITableViewDataSource, UITableViewDelegate> {
+@private
+    NSArray *_splitContentViewControllers;
+}
+@property (nonatomic, retain) NSArray *splitContentViewControllers;         // must confirm <SSplitControllerProtocol>
+@property (nonatomic, readonly) UIViewController<SSplitControllerProtocol> *currentOpenningSplitController;
 
-- (void)openSplitContentViewController:(SSplitContentViewController *)contentViewController Animated:(BOOL)animated;
-- (void)closeSplitContentViewController:(SSplitContentViewController *)contentViewController Animated:(BOOL)animated;
+- (void)openSplitContentViewController:(UIViewController<SSplitControllerProtocol> *)controller Animated:(BOOL)animated;
+- (void)closeSplitContentViewController:(UIViewController<SSplitControllerProtocol> *)controller Animated:(BOOL)animated;
 
 @end

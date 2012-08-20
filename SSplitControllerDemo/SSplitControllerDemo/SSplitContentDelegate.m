@@ -83,5 +83,13 @@
 + (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer Content:(UIView<SSplitContentViewProtocol> *)content {
     return YES;
 }
++ (UINavigationController<SSplitControllerProtocol> *)splitNavigationControllerWithSplitController:(UIViewController<SSplitControllerProtocol> *)splitController {
+    UINavigationController *nctr = splitController.navigationController;
+    if ([nctr conformsToProtocol:@protocol(SSplitControllerProtocol)]) {
+        return (UINavigationController<SSplitControllerProtocol> *)nctr;
+    } else {
+        return nil;
+    }
+}
 
 @end
