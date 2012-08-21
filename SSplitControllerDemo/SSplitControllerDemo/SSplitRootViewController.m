@@ -10,50 +10,49 @@
 
 @interface SSplitRootViewController()
 @property (nonatomic, assign) UITableView *menuTableView;
-@property (nonatomic, assign) UIViewController<SSplitControllerProtocol> *submittingSplitController;
+@property (nonatomic, assign) SSplitContentBoard *contentBoard;
 
-- (void)finishedOpenContentViewControllerAniamtion;
-- (void)finishedCloseContentViewControllerAniamtion;
+- (void)finishedSplitContentAnimation;
+- (void)finishedCoverContentAnimation;
 
-- (UIViewController<SSplitControllerProtocol> *)splitControllerWithViewController:(UIViewController<SSplitControllerProtocol> *)controller;
-- (void)resetContentViewController;
+- (void)splitContentBoardWithAnimated:(BOOL)animated;
+- (void)coverContentBoardWithAnimated:(BOOL)animated;
+
+- (void)regulateContentBoardWithGesture:(UIGestureRecognizer *)gesture Animated:(BOOL)animated;
 
 @end
 @implementation SSplitRootViewController
 @synthesize splitContentViewControllers = _splitContentViewControllers;
-@synthesize menuTableView;
-@synthesize submittingSplitController;
-@synthesize currentOpenningSplitController;
+@synthesize menuTableView, contentBoard;
+@synthesize currentContentViewController;
 
-#define kSplitContentControllerOriginXOpen       240.0
-#define kSplitContentControllerOriginXClose      0.0
+#define kSplitContentOriginXSplit       260.0
+#define kSplitContentOriginXCover       0.0
+
+#define kMoveContentAnimationDuration   0.3
 
 #pragma mark init & dealloc
 - (id)init {
     self = [super init];
     if (self) {
-        self.submittingSplitController = nil;
         self.splitContentViewControllers = nil;
+        self.currentContentViewController = nil;
     }
     return self;
 }
 - (void)dealloc {
-    self.submittingSplitController = nil;
     self.splitContentViewControllers = nil;
+    self.currentContentViewController = nil;
     [super dealloc];
 }
 - (void)setSplitContentViewControllers:(NSArray *)splitContentViewControllers {
     [_splitContentViewControllers release];
     _splitContentViewControllers = [splitContentViewControllers retain];
     
-    for (UIViewController<SSplitControllerProtocol> *content in self.splitContentViewControllers) {
+    for (UIViewController<SSplitViewControllerProtocol> *content in self.splitContentViewControllers) {
         CGRect _f = content.view.frame;
         _f.origin.y = -20;
         content.view.frame = _f;
-        
-        if ([content conformsToProtocol:@protocol(SSplitControllerProtocol)]) {
-            content.splitControllerDelegate = self;
-        }
     }
 }
 
@@ -61,29 +60,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor greenColor];
+    
+    SSplitContentBoard *_cb = [[SSplitContentBoard alloc] defaultSplitContentBoard];
+    _cb.splitDelegate = self;
+    [self.view addSubview:_cb];
+    self.contentBoard = _cb;
+    [_cb release];
 }
 
-#pragma mark split controller delegate
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController beginedGesutre:(UIGestureRecognizer *)gesture {
+#pragma mark split delegate
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView beginedGesture:(UIGestureRecognizer *)gesture {}
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView endedGesture:(UIGestureRecognizer *)gesture {
+    [self regulateContentBoardWithGesture:gesture Animated:YES];
 }
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController endedGesutre:(UIGestureRecognizer *)gesture {
-}
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController changedGesutre:(UIGestureRecognizer *)gesture {
-    CGPoint _begin = splitController.beginPoint;
-    CGPoint _change = splitController.movePoint;
-    CGFloat _delta = _change.x - _begin.x;
-    splitController = [self splitControllerWithViewController:splitController];
-    CGRect _f = splitController.view.frame;
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView changedGesture:(UIGestureRecognizer *)gesture {
+    CGPoint _origin = splitContentView.originalPoint;
+    CGPoint _current = splitContentView.currentPoint;
+    CGFloat _delta = _current.x - _origin.x;
+    
+    CGRect _f = splitContentView.frame;
     _f.origin.x += _delta;
-    _f.origin.x = _f.origin.x < kSplitContentControllerOriginXClose ? kSplitContentControllerOriginXClose : _f.origin.x;
-    _f.origin.x = _f.origin.x > kSplitContentControllerOriginXOpen ? kSplitContentControllerOriginXOpen : _f.origin.x;
-    splitController.view.frame = _f;
-    NSLog(@"\nbegin : %@\nchange : %@\ndelta : %f\nframe : %@", NSStringFromCGPoint(_begin), NSStringFromCGPoint(_change), _delta, NSStringFromCGRect(_f));
+    _f.origin.x = _f.origin.x < kSplitContentOriginXCover ? kSplitContentOriginXCover : _f.origin.x;
+    _f.origin.x = _f.origin.x > kSplitContentOriginXSplit ? kSplitContentOriginXSplit : _f.origin.x;
+    splitContentView.frame = _f;
 }
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController canceledGesutre:(UIGestureRecognizer *)gesture {
+- (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView canceledGesture:(UIGestureRecognizer *)gesture {
+    [self regulateContentBoardWithGesture:gesture Animated:YES];
 }
 
-#pragma mark table delegate
+#pragma mark menu delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 44.0;
 }
@@ -105,86 +110,127 @@
 }
 
 #pragma mark content manager
-- (UIViewController<SSplitControllerProtocol> *)currentOpenningSplitController {
-    for (UIViewController<SSplitControllerProtocol> *controller in self.splitContentViewControllers) {
-        if (controller.isSplitOpenning) {
-            return controller;
+- (UIViewController<SSplitViewControllerProtocol> *)validContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController {
+    UIViewController<SSplitViewControllerProtocol> *result = contentViewController.splitNavigationController;
+    result = result ? result : contentViewController;
+    for (UIViewController<SSplitViewControllerProtocol> *sctr in self.splitContentViewControllers) {
+        if (sctr == result) {
+            return sctr;
         }
     }
     return nil;
 }
-- (UIViewController<SSplitControllerProtocol> *)splitControllerWithViewController:(UIViewController<SSplitControllerProtocol> *)controller {
-    UIViewController<SSplitControllerProtocol> *target = controller.splitNavigationController;
-    target = target ? target : controller;
-    for (UIViewController<SSplitControllerProtocol> *ctr in self.splitContentViewControllers) {
-        if (target == ctr) {
-            return ctr;
+- (void)splitContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated {
+    contentViewController = [self validContentViewController:contentViewController];
+    if (contentViewController) {
+        self.currentContentViewController = contentViewController;
+        [self.contentBoard addSplitContentView:contentViewController.view];
+        [self splitContentBoardWithAnimated:animated];
+    }
+}
+- (void)coverContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated {
+    contentViewController = [self validContentViewController:contentViewController];
+    if (contentViewController) {
+        self.currentContentViewController = contentViewController;
+        [self.contentBoard addSplitContentView:contentViewController.view];
+        [self coverContentBoardWithAnimated:animated];
+    }
+}
+- (void)splitContentBoardWithAnimated:(BOOL)animated {
+    if (self.contentBoard.status == SSplitContentViewStatusSplit) {
+        //return;
+    }
+    
+    self.currentContentViewController.view.userInteractionEnabled = NO;
+    
+    CGRect _f = self.contentBoard.frame;
+    _f.origin.x = kSplitContentOriginXSplit;
+    if (animated) {
+        [UIView beginAnimations:@"split" context:NULL];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:kMoveContentAnimationDuration];
+        [UIView setAnimationDidStopSelector:@selector(finishedSplitContentAnimation)];
+        self.contentBoard.frame = _f;
+        [UIView commitAnimations];
+    } else {
+        self.contentBoard.frame = _f;
+        [self finishedSplitContentAnimation];
+    }
+}
+- (void)coverContentBoardWithAnimated:(BOOL)animated {
+    if (self.contentBoard.status == SSplitContentViewStatusCover) {
+        //return;
+    }
+    
+    self.currentContentViewController.view.userInteractionEnabled = NO;
+    
+    CGRect _f = self.contentBoard.frame;
+    _f.origin.x = kSplitContentOriginXCover;
+    if (animated) {
+        [UIView beginAnimations:@"cover" context:NULL];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:kMoveContentAnimationDuration];
+        [UIView setAnimationDidStopSelector:@selector(finishedCoverContentAnimation)];
+        self.contentBoard.frame = _f;
+        [UIView commitAnimations];
+    } else {
+        self.contentBoard.frame = _f;
+        [self finishedCoverContentAnimation];
+    }
+}
+- (void)finishedSplitContentAnimation {
+    self.contentBoard.status = SSplitContentViewStatusSplit;
+}
+- (void)finishedCoverContentAnimation {
+    self.contentBoard.status = SSplitContentViewStatusCover;
+    self.currentContentViewController.view.userInteractionEnabled = YES;
+}
+- (void)regulateContentBoardWithGesture:(UIGestureRecognizer *)gesture Animated:(BOOL)animated {
+    if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+        CGFloat _velocityX = [(UIPanGestureRecognizer *)gesture velocityInView:self.view].x;
+        //  优先处理swipe手势
+        if (_velocityX > 1000.0) {
+            //  swipe gesture : from left to right  ->
+            [self splitContentBoardWithAnimated:animated];
+            return;
         }
-    }
-    return nil;
-}
-- (void)openSplitContentViewController:(UIViewController<SSplitControllerProtocol> *)controller Animated:(BOOL)animated {
-    controller = [self splitControllerWithViewController:controller];
-    if (controller.isSplitOpenning) {
-        return;
-    }
-    self.submittingSplitController = controller;
-    [self resetContentViewController];
-    [self.view addSubview:self.submittingSplitController.view];
-    CGRect _f = controller.view.frame;
-    _f.origin.x = kSplitContentControllerOriginXOpen;
-    controller.originX = kSplitContentControllerOriginXOpen;
-    if (animated) {
-        [UIView beginAnimations:@"open" context:NULL];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:0.5];
-        [UIView setAnimationDidStopSelector:@selector(finishedOpenContentViewControllerAniamtion)];
-        controller.view.frame = _f;
-        [UIView commitAnimations];
-    } else {
-        controller.view.frame = _f;
-        [self finishedOpenContentViewControllerAniamtion];
-    }
-}
-- (void)closeSplitContentViewController:(UIViewController<SSplitControllerProtocol> *)controller Animated:(BOOL)animated {
-    controller = [self splitControllerWithViewController:controller];
-    if (!controller.isSplitOpenning) {
-        return;
-    }
-    self.submittingSplitController = controller;
-    CGRect _f = controller.view.frame;
-    _f.origin.x = kSplitContentControllerOriginXClose;
-    controller.originX = kSplitContentControllerOriginXClose;
-    if (animated) {
-        [UIView beginAnimations:@"close" context:NULL];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:0.5];
-        [UIView setAnimationDidStopSelector:@selector(finishedCloseContentViewControllerAniamtion)];
-        controller.view.frame = _f;
-        [UIView commitAnimations];
-    } else {
-        controller.view.frame = _f;
-        [self finishedCloseContentViewControllerAniamtion];
-    }
-}
-- (void)finishedOpenContentViewControllerAniamtion {
-    self.submittingSplitController.isSplitOpenning = YES;
-}
-- (void)finishedCloseContentViewControllerAniamtion {
-    self.submittingSplitController.isSplitOpenning = NO;
-}
-- (void)resetContentViewController {
-    UIViewController<SSplitControllerProtocol> *openning = self.currentOpenningSplitController;
-    if (openning) {
-        self.submittingSplitController.view.frame = openning.view.frame;
-    }
-    for (UIViewController *cvctr in self.splitContentViewControllers) {
-        if (cvctr.view.superview) {
-            [cvctr.view removeFromSuperview];
+        if (_velocityX < -1000.0) {
+            //  swipe gesture : from right to left  <-
+            [self coverContentBoardWithAnimated:animated];
+            return;
+        }
+        //  处理pan手势
+        CGFloat _x = [(UIPanGestureRecognizer *)gesture translationInView:self.view].x;
+        if (_x > self.view.bounds.size.width/2) {
+            [self splitContentBoardWithAnimated:animated];
+        } else {
+            [self coverContentBoardWithAnimated:animated];
         }
     }
 }
 
+@end
+
+@implementation SSplitRootViewController (SSplitContentViewProtocol)
+
+- (void)setSplitDelegate:(id<SSplitContentViewDelegate>)asplitDelegate {
+    self.contentBoard.splitDelegate = asplitDelegate;
+}
+- (id<SSplitContentViewDelegate>)splitDelegate {
+    return self.contentBoard.splitDelegate;
+}
+- (void)setSplitEnable:(BOOL)asplitEnable {
+    self.contentBoard.splitEnable = asplitEnable;
+}
+- (BOOL)splitEnable {
+    return self.contentBoard.splitEnable;
+}
+- (CGPoint)originalPoint {
+    return self.contentBoard.originalPoint;
+}
+- (CGPoint)currentPoint {
+    return self.currentPoint;
+}
 
 @end
 
@@ -192,28 +238,107 @@
 
 #pragma mark - Split Content Board
 @implementation SSplitContentBoard
-@synthesize splitDelegate, splitEnable;
+@synthesize splitDelegate, splitEnable, originalPoint, currentPoint;
+@synthesize status;
 
 #pragma mark init & dealloc
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.splitEnable = YES;
+        self.status = SSplitContentViewStatusCover;
+        self.originalPoint = self.currentPoint = CGPointZero;
         [self addGestures];
     }
     return self;
 }
 - (SSplitContentBoard *)defaultSplitContentBoard {
-    
+    CGRect _f = CGRectMake(0, 0, 320, 460);
+    self = [self initWithFrame:_f];
+    if (self) {
+        self.backgroundColor = [UIColor clearColor];
+    }
+    return self;
 }
 - (void)dealloc {
     [super dealloc];
 }
 
-#pragma mark
-- (void)addGestures {
-    
+#pragma mark content
+#define kSplitContentViewTag 999
+- (void)addSplitContentView:(UIView *)content {
+    UIView *showingContentView = [self viewWithTag:kSplitContentViewTag];
+    if (showingContentView) {
+        [showingContentView removeFromSuperview];
+    }
+    content.tag = kSplitContentViewTag;
+    [self addSubview:content];
 }
-- (void)responseGesture:(UIGestureRecognizer *)gesture {}
+
+#pragma mark gesture manager
+- (void)addGestures {
+    UIPanGestureRecognizer *_pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(responseGesture:)];
+    [self addGestureRecognizer:_pan];
+    [_pan release];
+}
+- (void)responseGesture:(UIGestureRecognizer *)gesture {
+    if (self.splitDelegate) {
+        if (!self.splitEnable) {
+            return;
+        }
+        switch (gesture.state) {
+            case UIGestureRecognizerStatePossible:
+                break;
+            case UIGestureRecognizerStateBegan:
+            {
+                if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+                    self.originalPoint = self.currentPoint = [(UIPanGestureRecognizer *)gesture translationInView:self.superview];
+                }
+                if ([self.splitDelegate respondsToSelector:@selector(splitContentView:beginedGesture:)]) {
+                    [self.splitDelegate splitContentView:self beginedGesture:gesture];
+                }
+            }
+                break;
+            case UIGestureRecognizerStateChanged:
+            {
+                if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+                    self.currentPoint = [(UIPanGestureRecognizer *)gesture translationInView:self.superview];
+                }
+                if ([self.splitDelegate respondsToSelector:@selector(splitContentView:changedGesture:)]) {
+                    [self.splitDelegate splitContentView:self changedGesture:gesture];
+                }
+                if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+                    self.originalPoint = self.currentPoint;
+                }
+            }
+                break;
+            case UIGestureRecognizerStateEnded:
+            {
+                self.originalPoint = self.currentPoint = CGPointZero;
+                if ([self.splitDelegate respondsToSelector:@selector(splitContentView:endedGesture:)]) {
+                    [self.splitDelegate splitContentView:self endedGesture:gesture];
+                }
+            }
+                break;
+            case UIGestureRecognizerStateCancelled:
+            {
+                self.originalPoint = self.currentPoint = CGPointZero;
+                if ([self.splitDelegate respondsToSelector:@selector(splitContentView:canceledGesture:)]) {
+                    [self.splitDelegate splitContentView:self canceledGesture:gesture];
+                }
+            }
+                break;
+            default:
+            {
+                self.originalPoint = self.currentPoint = CGPointZero;
+                if ([self.splitDelegate respondsToSelector:@selector(splitContentView:canceledGesture:)]) {
+                    [self.splitDelegate splitContentView:self canceledGesture:gesture];
+                }
+            }
+                break;
+        }
+    }
+}
 
 @end
 

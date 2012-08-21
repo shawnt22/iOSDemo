@@ -10,33 +10,15 @@
 #import "SSplitContentDelegate.h"
 
 #pragma mark - Content View Controller
-@interface SSplitContentViewController : UIViewController <SSplitContentViewDelegate, SSplitControllerProtocol>
+@interface SSplitContentViewController : UIViewController <SSplitViewControllerProtocol>
 
 @end
 
-@interface SSplitNavigationContentViewController : UINavigationController <SSplitControllerProtocol>
-@property (nonatomic, readonly) UIViewController<SSplitControllerProtocol, SSplitContentViewDelegate> *splitRootViewController;
+@interface SSplitNavigationContentViewController : UINavigationController <SSplitViewControllerProtocol>
 
 @end
 
 #pragma mark - tset views
-@interface TestView : UIView <SSplitContentViewProtocol>
-
-@end
-
-@interface TestTableView : UITableView <UITableViewDelegate, UITableViewDataSource, SSplitContentViewProtocol>
-
-@end
-
-@interface TestWebView : UIWebView <SSplitContentViewProtocol>
-
-@end
-
-@interface TestScrolView : UIScrollView <SSplitContentViewProtocol>
-
-@end
-
-@interface TestTableView2 : UITableView <UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, assign) SSplitContentViewController *splitContentViewController;
+@interface TestTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
 
 @end

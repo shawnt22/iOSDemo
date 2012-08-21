@@ -7,26 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SSplitContentViewController.h"
+#import "SSplitContentDelegate.h"
 
-@class SSplitContentViewController;
-@interface SSplitRootViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, SSPlitControllerDelegate> {
+@interface SSplitRootViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, SSplitContentViewDelegate> {
 @private
     NSArray *_splitContentViewControllers;
 }
-@property (nonatomic, retain) NSArray *splitContentViewControllers;         // must confirm <SSplitControllerProtocol>
-@property (nonatomic, readonly) UIViewController<SSplitControllerProtocol> *currentOpenningSplitController;
+@property (nonatomic, retain) NSArray *splitContentViewControllers;         // must confirm <SSplitViewControllerProtocol>
+@property (nonatomic, assign) UIViewController<SSplitViewControllerProtocol> *currentContentViewController;
 
-- (void)openSplitContentViewController:(UIViewController<SSplitControllerProtocol> *)controller Animated:(BOOL)animated;
-- (void)closeSplitContentViewController:(UIViewController<SSplitControllerProtocol> *)controller Animated:(BOOL)animated;
+- (void)splitContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from left to right : ->
+- (void)coverContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from right to left : <-
 
 @end
 
 
 #pragma mark - Split Content Board
-#import "SSplitContentDelegate.h"
 @interface SSplitContentBoard : UIView <SSplitContentViewProtocol>
-
 - (SSplitContentBoard *)defaultSplitContentBoard;
+- (void)addSplitContentView:(UIView *)content;
 
 @end

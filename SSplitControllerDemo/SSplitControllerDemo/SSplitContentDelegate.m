@@ -10,75 +10,20 @@
 
 @implementation SSplitContentUtil
 
-#pragma mark gesture
-+ (void)addGesturesWithContent:(UIView<SSplitContentViewProtocol> *)content {
-    UIPanGestureRecognizer *_pan = [[UIPanGestureRecognizer alloc] initWithTarget:content action:@selector(responseGesture:)];
-    [content addGestureRecognizer:_pan];
-    [_pan release];
-    
-//    UISwipeGestureRecognizer *_leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:content action:@selector(responseSwipeGesture:)];
-//    _leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
-//    [content addGestureRecognizer:_leftSwipe];
-//    [_leftSwipe release];
-//    
-//    UISwipeGestureRecognizer *_rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:content action:@selector(responseSwipeGesture:)];
-//    _rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-//    [content addGestureRecognizer:_rightSwipe];
-//    [_rightSwipe release];
-}
-+ (void)responseGesture:(UIGestureRecognizer *)gesture Content:(UIView<SSplitContentViewProtocol> *)content {
-    if (content.splitDelegate) {
-        if ([content respondsToSelector:@selector(shouldSplit)] && !content.splitEnable) {
-            return;
-        }
-        switch (gesture.state) {
-            case UIGestureRecognizerStatePossible:
-                break;
-            case UIGestureRecognizerStateBegan:
-            {
-                if ([content.splitDelegate respondsToSelector:@selector(splitContentView:beginedGesture:)]) {
-                    [content.splitDelegate splitContentView:content beginedGesture:gesture];
-                }
-            }
-                break;
-            case UIGestureRecognizerStateChanged:
-            {
-                if ([content.splitDelegate respondsToSelector:@selector(splitContentView:changedGesture:)]) {
-                    [content.splitDelegate splitContentView:content changedGesture:gesture];
-                }
-            }
-                break;
-            case UIGestureRecognizerStateEnded:
-            {
-                if ([content.splitDelegate respondsToSelector:@selector(splitContentView:endedGesture:)]) {
-                    [content.splitDelegate splitContentView:content endedGesture:gesture];
-                }
-            }
-                break;
-            case UIGestureRecognizerStateCancelled:
-            {
-                if ([content.splitDelegate respondsToSelector:@selector(splitContentView:canceledGesture:)]) {
-                    [content.splitDelegate splitContentView:content canceledGesture:gesture];
-                }
-            }
-                break;
-            default:
-            {
-                if ([content.splitDelegate respondsToSelector:@selector(splitContentView:canceledGesture:)]) {
-                    [content.splitDelegate splitContentView:content canceledGesture:gesture];
-                }
-            }
-                break;
+
++ (UIViewController<SSplitViewControllerProtocol> *)splitViewControllerWithSplitNavigationController:(UINavigationController<SSplitViewControllerProtocol> *)nctr {
+    if ([nctr.viewControllers count] > 0) {
+        UIViewController *_root = [nctr.viewControllers objectAtIndex:0];
+        if ([_root conformsToProtocol:@protocol(SSplitViewControllerProtocol)]) {
+            return (UIViewController<SSplitViewControllerProtocol> *)_root;
         }
     }
+    return nil;
 }
-+ (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer Content:(UIView<SSplitContentViewProtocol> *)content {
-    return YES;
-}
-+ (UINavigationController<SSplitControllerProtocol> *)splitNavigationControllerWithSplitController:(UIViewController<SSplitControllerProtocol> *)splitController {
-    UINavigationController *nctr = splitController.navigationController;
-    if ([nctr conformsToProtocol:@protocol(SSplitControllerProtocol)]) {
-        return (UINavigationController<SSplitControllerProtocol> *)nctr;
++ (UINavigationController<SSplitViewControllerProtocol> *)splitNavigationControllerWithSplitViewController:(UIViewController<SSplitViewControllerProtocol> *)vctr {
+    UINavigationController *snctr = vctr.navigationController;
+    if ([snctr conformsToProtocol:@protocol(SSplitViewControllerProtocol)]) {
+        return (UINavigationController<SSplitViewControllerProtocol> *)snctr;
     } else {
         return nil;
     }

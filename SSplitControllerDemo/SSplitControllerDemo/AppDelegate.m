@@ -74,7 +74,7 @@
     [self.window addSubview:self.splitViewController.view];
     [_splitVctr release];
     
-    [self.splitViewController openSplitContentViewController:self.aSplitContentViewController Animated:YES];
+    [self.splitViewController splitContentViewController:self.aSplitContentViewController Animated:YES];
     
     return YES;
 }
