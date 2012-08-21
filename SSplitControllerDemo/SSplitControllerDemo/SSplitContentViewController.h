@@ -10,11 +10,11 @@
 #import "SSplitContentDelegate.h"
 
 #pragma mark - Content View Controller
-@interface SSplitContentViewController : UIViewController <SSplitViewControllerProtocol>
+@interface SSplitContentViewController : UIViewController <SSplitControllerProtocol>
 
 @end
 
-@interface SSplitNavigationContentViewController : UINavigationController <SSplitViewControllerProtocol>
+@interface SSplitNavigationContentViewController : UINavigationController <SSplitControllerProtocol>
 
 @end
 

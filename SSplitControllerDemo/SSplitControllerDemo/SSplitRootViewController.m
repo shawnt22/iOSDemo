@@ -49,7 +49,7 @@
     [_splitContentViewControllers release];
     _splitContentViewControllers = [splitContentViewControllers retain];
     
-    for (UIViewController<SSplitViewControllerProtocol> *content in self.splitContentViewControllers) {
+    for (UIViewController<SSplitControllerProtocol> *content in self.splitContentViewControllers) {
         CGRect _f = content.view.frame;
         _f.origin.y = -20;
         content.view.frame = _f;
@@ -110,17 +110,17 @@
 }
 
 #pragma mark content manager
-- (UIViewController<SSplitViewControllerProtocol> *)validContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController {
-    UIViewController<SSplitViewControllerProtocol> *result = contentViewController.splitNavigationController;
+- (UIViewController<SSplitControllerProtocol> *)validContentViewController:(UIViewController<SSplitControllerProtocol> *)contentViewController {
+    UIViewController<SSplitControllerProtocol> *result = contentViewController.splitNavigationController;
     result = result ? result : contentViewController;
-    for (UIViewController<SSplitViewControllerProtocol> *sctr in self.splitContentViewControllers) {
+    for (UIViewController<SSplitControllerProtocol> *sctr in self.splitContentViewControllers) {
         if (sctr == result) {
             return sctr;
         }
     }
     return nil;
 }
-- (void)splitContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated {
+- (void)splitContentViewController:(UIViewController<SSplitControllerProtocol> *)contentViewController Animated:(BOOL)animated {
     contentViewController = [self validContentViewController:contentViewController];
     if (contentViewController) {
         self.currentContentViewController = contentViewController;
@@ -128,7 +128,7 @@
         [self splitContentBoardWithAnimated:animated];
     }
 }
-- (void)coverContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated {
+- (void)coverContentViewController:(UIViewController<SSplitControllerProtocol> *)contentViewController Animated:(BOOL)animated {
     contentViewController = [self validContentViewController:contentViewController];
     if (contentViewController) {
         self.currentContentViewController = contentViewController;
@@ -257,6 +257,11 @@
     self = [self initWithFrame:_f];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        UIImageView *_shadow = [[UIImageView alloc] initWithFrame:CGRectMake(-5, 0, 5, self.bounds.size.height)];
+        _shadow.tag = -1;
+        _shadow.backgroundColor = [UIColor grayColor];
+        [self addSubview:_shadow];
+        [_shadow release];
     }
     return self;
 }

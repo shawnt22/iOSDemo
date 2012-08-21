@@ -14,10 +14,10 @@
     NSArray *_splitContentViewControllers;
 }
 @property (nonatomic, retain) NSArray *splitContentViewControllers;         // must confirm <SSplitViewControllerProtocol>
-@property (nonatomic, assign) UIViewController<SSplitViewControllerProtocol> *currentContentViewController;
+@property (nonatomic, assign) UIViewController<SSplitControllerProtocol> *currentContentViewController;
 
-- (void)splitContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from left to right : ->
-- (void)coverContentViewController:(UIViewController<SSplitViewControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from right to left : <-
+- (void)splitContentViewController:(UIViewController<SSplitControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from left to right : ->
+- (void)coverContentViewController:(UIViewController<SSplitControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from right to left : <-
 
 @end
 

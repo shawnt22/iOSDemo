@@ -11,19 +11,19 @@
 @implementation SSplitContentUtil
 
 
-+ (UIViewController<SSplitViewControllerProtocol> *)splitViewControllerWithSplitNavigationController:(UINavigationController<SSplitViewControllerProtocol> *)nctr {
++ (UIViewController<SSplitControllerProtocol> *)splitViewControllerWithSplitNavigationController:(UINavigationController<SSplitControllerProtocol> *)nctr {
     if ([nctr.viewControllers count] > 0) {
         UIViewController *_root = [nctr.viewControllers objectAtIndex:0];
-        if ([_root conformsToProtocol:@protocol(SSplitViewControllerProtocol)]) {
-            return (UIViewController<SSplitViewControllerProtocol> *)_root;
+        if ([_root conformsToProtocol:@protocol(SSplitControllerProtocol)]) {
+            return (UIViewController<SSplitControllerProtocol> *)_root;
         }
     }
     return nil;
 }
-+ (UINavigationController<SSplitViewControllerProtocol> *)splitNavigationControllerWithSplitViewController:(UIViewController<SSplitViewControllerProtocol> *)vctr {
++ (UINavigationController<SSplitControllerProtocol> *)splitNavigationControllerWithSplitViewController:(UIViewController<SSplitControllerProtocol> *)vctr {
     UINavigationController *snctr = vctr.navigationController;
-    if ([snctr conformsToProtocol:@protocol(SSplitViewControllerProtocol)]) {
-        return (UINavigationController<SSplitViewControllerProtocol> *)snctr;
+    if ([snctr conformsToProtocol:@protocol(SSplitControllerProtocol)]) {
+        return (UINavigationController<SSplitControllerProtocol> *)snctr;
     } else {
         return nil;
     }

@@ -23,7 +23,7 @@
 }
 
 #pragma mark split controller protocol
-- (UINavigationController<SSplitViewControllerProtocol> *)splitNavigationController {
+- (UINavigationController<SSplitControllerProtocol> *)splitNavigationController {
     return [SSplitContentUtil splitNavigationControllerWithSplitViewController:self];
 }
 
@@ -42,7 +42,7 @@
 
 @implementation SSplitNavigationContentViewController
 
-- (UIViewController<SSplitViewControllerProtocol> *)splitViewController {
+- (UIViewController<SSplitControllerProtocol> *)splitViewController {
     return [SSplitContentUtil splitViewControllerWithSplitNavigationController:self];
 }
 

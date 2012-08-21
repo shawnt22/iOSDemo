@@ -48,10 +48,10 @@ typedef enum {
 /*
  SplitController Protocol
  */
-@protocol SSplitViewControllerProtocol <NSObject>
+@protocol SSplitControllerProtocol <NSObject>
 @optional
-@property (nonatomic, readonly) UINavigationController<SSplitViewControllerProtocol> *splitNavigationController;
-@property (nonatomic, readonly) UIViewController<SSplitViewControllerProtocol> *splitViewController;
+@property (nonatomic, readonly) UINavigationController<SSplitControllerProtocol> *splitNavigationController;    //  ViewController 实现该属性    可直接调用[SSplitContentUtil splitNavigationControllerWithSplitViewController:]
+@property (nonatomic, readonly) UIViewController<SSplitControllerProtocol> *splitViewController;                //  NavigationController 实现该属性  可直接调用[SSplitContentUtil splitViewControllerWithSplitNavigationController:]
 
 @end
 
@@ -61,7 +61,7 @@ typedef enum {
  */
 @interface SSplitContentUtil : NSObject
 
-+ (UIViewController<SSplitViewControllerProtocol> *)splitViewControllerWithSplitNavigationController:(UINavigationController<SSplitViewControllerProtocol> *)nctr;
-+ (UINavigationController<SSplitViewControllerProtocol> *)splitNavigationControllerWithSplitViewController:(UIViewController<SSplitViewControllerProtocol> *)vctr;
++ (UIViewController<SSplitControllerProtocol> *)splitViewControllerWithSplitNavigationController:(UINavigationController<SSplitControllerProtocol> *)nctr;
++ (UINavigationController<SSplitControllerProtocol> *)splitNavigationControllerWithSplitViewController:(UIViewController<SSplitControllerProtocol> *)vctr;
 
 @end
