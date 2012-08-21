@@ -10,7 +10,7 @@
 #import "SSplitContentViewController.h"
 
 @class SSplitContentViewController;
-@interface SSplitRootViewController : UIViewController <SSPlitControllerDelegate, UITableViewDataSource, UITableViewDelegate> {
+@interface SSplitRootViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, SSPlitControllerDelegate> {
 @private
     NSArray *_splitContentViewControllers;
 }

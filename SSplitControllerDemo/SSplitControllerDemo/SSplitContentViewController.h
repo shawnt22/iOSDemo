@@ -35,3 +35,8 @@
 @interface TestScrolView : UIScrollView <SSplitContentViewProtocol>
 
 @end
+
+@interface TestTableView2 : UITableView <UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, assign) SSplitContentViewController *splitContentViewController;
+
+@end

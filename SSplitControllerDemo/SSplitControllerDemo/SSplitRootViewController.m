@@ -25,8 +25,8 @@
 @synthesize submittingSplitController;
 @synthesize currentOpenningSplitController;
 
-#define kSplitContentControllerCenterXOpen       0
-#define kSplitContentControllerCenterXClose      0
+#define kSplitContentControllerOriginXOpen       240.0
+#define kSplitContentControllerOriginXClose      0.0
 
 #pragma mark init & dealloc
 - (id)init {
@@ -52,8 +52,7 @@
         content.view.frame = _f;
         
         if ([content conformsToProtocol:@protocol(SSplitControllerProtocol)]) {
-            UIViewController<SSplitControllerProtocol> *_splitCtr = (UIViewController<SSplitControllerProtocol> *)content;
-            _splitCtr.splitControllerDelegate = self;
+            content.splitControllerDelegate = self;
         }
     }
 }
@@ -65,19 +64,18 @@
 }
 
 #pragma mark split controller delegate
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController beginedGesutre:(UIGestureRecognizer *)gesture {}
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController endedGesutre:(UIGestureRecognizer *)gesture {}
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController changedGesutre:(UIGestureRecognizer *)gesture {
-    if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
-        CGPoint begin = [(UIPanGestureRecognizer *)splitController.beginGesture translationInView:self.view];
-        CGPoint move = [(UIPanGestureRecognizer *)splitController.moveGesture translationInView:self.view];
-        CGPoint velocity = [(UIPanGestureRecognizer *)splitController.moveGesture velocityInView:self.view];
-        NSLog(@"move from : %@ to : %@ at : %@", NSStringFromCGPoint(begin), NSStringFromCGPoint(move), NSStringFromCGPoint(velocity));
-        
-        
-    }
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController beginedGesutre:(UIGestureRecognizer *)gesture {
+    NSLog(@"beginedGesture");
 }
-- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController canceledGesutre:(UIGestureRecognizer *)gesture {}
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController endedGesutre:(UIGestureRecognizer *)gesture {
+    NSLog(@"endedGesture");
+}
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController changedGesutre:(UIGestureRecognizer *)gesture {
+    NSLog(@"changedGesture");
+}
+- (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController canceledGesutre:(UIGestureRecognizer *)gesture {
+    NSLog(@"canceledGesture");
+}
 
 #pragma mark table delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -148,7 +146,7 @@
     }
     self.submittingSplitController = controller;
     CGPoint _center = controller.view.center;
-    _center.x = kSplitContentControllerCenterXClose;
+    _center.x = kSplitContentControllerOriginXClose;
     if (animated) {
         [UIView beginAnimations:@"close" context:NULL];
         [UIView setAnimationDelegate:self];

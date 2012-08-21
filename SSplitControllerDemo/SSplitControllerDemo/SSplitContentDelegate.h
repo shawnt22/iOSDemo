@@ -15,7 +15,7 @@
 @protocol SSplitContentViewProtocol;
 @protocol SSplitContentViewDelegate <NSObject>
 @optional
-//- (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView;
+- (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView;
 
 - (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView beginedGesture:(UIGestureRecognizer *)gesture;
 - (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView endedGesture:(UIGestureRecognizer *)gesture;
@@ -62,6 +62,7 @@
 @property (nonatomic, readonly) UIGestureRecognizer *beginGesture;
 @property (nonatomic, readonly) UIGestureRecognizer *moveGesture;
 @property (nonatomic, assign) BOOL isSplitOpenning;
+@property (nonatomic, assign) BOOL splitEnable;
 
 @optional
 @property (nonatomic, assign) id<SSPlitControllerDelegate> splitControllerDelegate;
