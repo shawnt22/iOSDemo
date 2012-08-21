@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 
 @interface AppDelegate()
-@property (nonatomic, retain) SSplitRootViewController *splitViewController;
 @property (nonatomic, retain) SSplitContentViewController *aSplitContentViewController;
 @property (nonatomic, retain) SSplitContentViewController *bSplitContentViewController;
 @property (nonatomic, retain) SSplitContentViewController *cSplitContentViewController;
@@ -19,6 +18,13 @@
 
 @implementation AppDelegate
 @synthesize splitViewController, aSplitContentViewController, bSplitContentViewController, cSplitContentViewController, dSplitContentViewController;
+
++ (AppDelegate *)shareAppDelegate {
+    return (AppDelegate *)([UIApplication sharedApplication].delegate);
+}
++ (SSplitRootViewController *)shareSplitRootViewController {
+    return [AppDelegate shareAppDelegate].splitViewController;
+}
 
 - (void)dealloc
 {

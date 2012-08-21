@@ -13,5 +13,9 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, retain) SSplitRootViewController *splitViewController;
+
++ (AppDelegate *)shareAppDelegate;
++ (SSplitRootViewController *)shareSplitRootViewController;
 
 @end

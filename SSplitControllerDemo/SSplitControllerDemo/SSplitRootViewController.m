@@ -25,6 +25,7 @@
 @synthesize splitContentViewControllers = _splitContentViewControllers;
 @synthesize menuTableView, contentBoard;
 @synthesize currentContentViewController;
+@synthesize contentSplitEnable;
 
 #define kSplitContentOriginXSplit       260.0
 #define kSplitContentOriginXCover       0.0
@@ -54,6 +55,12 @@
         _f.origin.y = -20;
         content.view.frame = _f;
     }
+}
+- (void)setContentSplitEnable:(BOOL)asplitEnable {
+    self.contentBoard.splitEnable = asplitEnable;
+}
+- (BOOL)contentSplitEnable {
+    return self.contentBoard.splitEnable;
 }
 
 #pragma mark controller delegate

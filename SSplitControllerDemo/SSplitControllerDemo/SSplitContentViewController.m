@@ -7,6 +7,7 @@
 //
 
 #import "SSplitContentViewController.h"
+#import "AppDelegate.h"
 
 @implementation SSplitContentViewController
 @synthesize splitNavigationController;
@@ -28,6 +29,14 @@
 }
 
 #pragma mark controller delegate
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [AppDelegate shareSplitRootViewController].contentSplitEnable = YES;
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [AppDelegate shareSplitRootViewController].contentSplitEnable = NO;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blueColor];
@@ -36,6 +45,17 @@
     _table.backgroundColor = self.view.backgroundColor;
     [self.view addSubview:_table];
     [_table release];
+    
+    UIBarButtonItem *_push = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStylePlain target:self action:@selector(pushAction:)];
+    self.navigationItem.rightBarButtonItem = _push;
+    [_push release];
+}
+
+- (void)pushAction:(id)sender {
+    UIViewController *controller = [[UIViewController alloc] init];
+    controller.title = @"push controller";
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 @end

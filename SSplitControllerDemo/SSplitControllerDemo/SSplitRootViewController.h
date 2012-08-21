@@ -16,6 +16,8 @@
 @property (nonatomic, retain) NSArray *splitContentViewControllers;         // must confirm <SSplitViewControllerProtocol>
 @property (nonatomic, assign) UIViewController<SSplitControllerProtocol> *currentContentViewController;
 
+@property (nonatomic, assign) BOOL contentSplitEnable;
+
 - (void)splitContentViewController:(UIViewController<SSplitControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from left to right : ->
 - (void)coverContentViewController:(UIViewController<SSplitControllerProtocol> *)contentViewController Animated:(BOOL)animated;     //  content move from right to left : <-
 
