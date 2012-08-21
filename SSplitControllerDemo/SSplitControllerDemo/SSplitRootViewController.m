@@ -65,16 +65,22 @@
 
 #pragma mark split controller delegate
 - (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController beginedGesutre:(UIGestureRecognizer *)gesture {
-    NSLog(@"beginedGesture");
 }
 - (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController endedGesutre:(UIGestureRecognizer *)gesture {
-    NSLog(@"endedGesture");
 }
 - (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController changedGesutre:(UIGestureRecognizer *)gesture {
-    NSLog(@"changedGesture");
+    CGPoint _begin = splitController.beginPoint;
+    CGPoint _change = splitController.movePoint;
+    CGFloat _delta = _change.x - _begin.x;
+    splitController = [self splitControllerWithViewController:splitController];
+    CGRect _f = splitController.view.frame;
+    _f.origin.x += _delta;
+    _f.origin.x = _f.origin.x < kSplitContentControllerOriginXClose ? kSplitContentControllerOriginXClose : _f.origin.x;
+    _f.origin.x = _f.origin.x > kSplitContentControllerOriginXOpen ? kSplitContentControllerOriginXOpen : _f.origin.x;
+    splitController.view.frame = _f;
+    NSLog(@"\nbegin : %@\nchange : %@\ndelta : %f\nframe : %@", NSStringFromCGPoint(_begin), NSStringFromCGPoint(_change), _delta, NSStringFromCGRect(_f));
 }
 - (void)splitController:(UIViewController<SSplitControllerProtocol> *)splitController canceledGesutre:(UIGestureRecognizer *)gesture {
-    NSLog(@"canceledGesture");
 }
 
 #pragma mark table delegate
@@ -125,8 +131,9 @@
     self.submittingSplitController = controller;
     [self resetContentViewController];
     [self.view addSubview:self.submittingSplitController.view];
-    CGRect _f = self.submittingSplitController.view.frame;
-    _f.origin.x = 240.0;
+    CGRect _f = controller.view.frame;
+    _f.origin.x = kSplitContentControllerOriginXOpen;
+    controller.originX = kSplitContentControllerOriginXOpen;
     if (animated) {
         [UIView beginAnimations:@"open" context:NULL];
         [UIView setAnimationDelegate:self];
@@ -145,17 +152,18 @@
         return;
     }
     self.submittingSplitController = controller;
-    CGPoint _center = controller.view.center;
-    _center.x = kSplitContentControllerOriginXClose;
+    CGRect _f = controller.view.frame;
+    _f.origin.x = kSplitContentControllerOriginXClose;
+    controller.originX = kSplitContentControllerOriginXClose;
     if (animated) {
         [UIView beginAnimations:@"close" context:NULL];
         [UIView setAnimationDelegate:self];
         [UIView setAnimationDuration:0.5];
         [UIView setAnimationDidStopSelector:@selector(finishedCloseContentViewControllerAniamtion)];
-        controller.view.center = _center;
+        controller.view.frame = _f;
         [UIView commitAnimations];
     } else {
-        controller.view.center = _center;
+        controller.view.frame = _f;
         [self finishedCloseContentViewControllerAniamtion];
     }
 }
@@ -179,3 +187,36 @@
 
 
 @end
+
+
+
+#pragma mark - Split Content Board
+@implementation SSplitContentBoard
+@synthesize splitDelegate, splitEnable;
+
+#pragma mark init & dealloc
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self addGestures];
+    }
+    return self;
+}
+- (SSplitContentBoard *)defaultSplitContentBoard {
+    
+}
+- (void)dealloc {
+    [super dealloc];
+}
+
+#pragma mark
+- (void)addGestures {
+    
+}
+- (void)responseGesture:(UIGestureRecognizer *)gesture {}
+
+@end
+
+
+
+

@@ -28,7 +28,7 @@
 }
 + (void)responseGesture:(UIGestureRecognizer *)gesture Content:(UIView<SSplitContentViewProtocol> *)content {
     if (content.splitDelegate) {
-        if ([content respondsToSelector:@selector(shouldSplit)] && !content.shouldSplit) {
+        if ([content respondsToSelector:@selector(shouldSplit)] && !content.splitEnable) {
             return;
         }
         switch (gesture.state) {
@@ -36,7 +36,6 @@
                 break;
             case UIGestureRecognizerStateBegan:
             {
-                content.beginGesture = gesture;
                 if ([content.splitDelegate respondsToSelector:@selector(splitContentView:beginedGesture:)]) {
                     [content.splitDelegate splitContentView:content beginedGesture:gesture];
                 }
@@ -44,7 +43,6 @@
                 break;
             case UIGestureRecognizerStateChanged:
             {
-                content.moveGesture = gesture;
                 if ([content.splitDelegate respondsToSelector:@selector(splitContentView:changedGesture:)]) {
                     [content.splitDelegate splitContentView:content changedGesture:gesture];
                 }
@@ -55,8 +53,6 @@
                 if ([content.splitDelegate respondsToSelector:@selector(splitContentView:endedGesture:)]) {
                     [content.splitDelegate splitContentView:content endedGesture:gesture];
                 }
-                content.beginGesture = nil;
-                content.moveGesture = nil;
             }
                 break;
             case UIGestureRecognizerStateCancelled:
@@ -64,8 +60,6 @@
                 if ([content.splitDelegate respondsToSelector:@selector(splitContentView:canceledGesture:)]) {
                     [content.splitDelegate splitContentView:content canceledGesture:gesture];
                 }
-                content.beginGesture = nil;
-                content.moveGesture = nil;
             }
                 break;
             default:
@@ -73,8 +67,6 @@
                 if ([content.splitDelegate respondsToSelector:@selector(splitContentView:canceledGesture:)]) {
                     [content.splitDelegate splitContentView:content canceledGesture:gesture];
                 }
-                content.beginGesture = nil;
-                content.moveGesture = nil;
             }
                 break;
         }

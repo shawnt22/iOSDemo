@@ -21,3 +21,12 @@
 - (void)closeSplitContentViewController:(UIViewController<SSplitControllerProtocol> *)controller Animated:(BOOL)animated;
 
 @end
+
+
+#pragma mark - Split Content Board
+#import "SSplitContentDelegate.h"
+@interface SSplitContentBoard : UIView <SSplitContentViewProtocol>
+
+- (SSplitContentBoard *)defaultSplitContentBoard;
+
+@end

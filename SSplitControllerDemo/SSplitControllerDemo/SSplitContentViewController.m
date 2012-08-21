@@ -13,7 +13,7 @@
 @property (nonatomic, assign) TestTableView *testTable;
 @end
 @implementation SSplitContentViewController
-@synthesize beginGesture, moveGesture, isSplitOpenning, splitEnable, splitControllerDelegate;
+@synthesize beginPoint, movePoint, isSplitOpenning, splitEnable, splitControllerDelegate, originX;
 @synthesize testTable;
 @synthesize splitContentView;
 
@@ -37,12 +37,6 @@
     }
     return nil;
 }
-- (UIGestureRecognizer *)beginGesture {
-    return self.splitContentView.beginGesture;
-}
-- (UIGestureRecognizer *)moveGesture {
-    return self.splitContentView.moveGesture;
-}
 - (UINavigationController<SSplitControllerProtocol> *)splitNavigationController {
     return [SSplitContentUtil splitNavigationControllerWithSplitController:self];
 }
@@ -63,6 +57,11 @@
     
     self.view.backgroundColor = [UIColor blueColor];
     
+    TestTableView2 *_table = [[TestTableView2 alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    _table.backgroundColor = self.view.backgroundColor;
+    [self.view addSubview:_table];
+    [_table release];
+    
     //  view
 //    TestView *_v = [[TestView alloc] initWithFrame:self.view.bounds];
 //    _v.backgroundColor = self.view.backgroundColor;
@@ -77,11 +76,6 @@
 //    [self.view addSubview:_table];
 //    self.testTable = _table;
 //    [_table release];
-    
-    TestTableView2 *_table = [[TestTableView2 alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    _table.backgroundColor = self.view.backgroundColor;
-    [self.view addSubview:_table];
-    [_table release];
 
 //    //  webview
 //    TestWebView *_web = [[TestWebView alloc] initWithFrame:self.view.bounds];
@@ -103,6 +97,10 @@
     if (!self.splitEnable) {
         return;
     }
+    if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+        self.beginPoint = [(UIPanGestureRecognizer *)gesture translationInView:self.view];
+        self.movePoint = self.beginPoint;
+    }
     if (self.splitControllerDelegate && [self.splitControllerDelegate respondsToSelector:@selector(splitController:beginedGesutre:)]) {
         [self.splitControllerDelegate splitController:self beginedGesutre:gesture];
     }
@@ -119,8 +117,14 @@
     if (!self.splitEnable) {
         return;
     }
+    if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+        self.movePoint = [(UIPanGestureRecognizer *)gesture translationInView:self.view];
+    }
     if (self.splitControllerDelegate && [self.splitControllerDelegate respondsToSelector:@selector(splitController:changedGesutre:)]) {
         [self.splitControllerDelegate splitController:self changedGesutre:gesture];
+    }
+    if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+        self.beginPoint = movePoint;
     }
 }
 - (void)splitContentView:(id<SSplitContentViewProtocol>)splitContentView canceledGesture:(UIGestureRecognizer *)gesture {
@@ -136,7 +140,6 @@
 
 
 @implementation SSplitNavigationContentViewController
-@synthesize beginGesture, moveGesture, isSplitOpenning;
 
 - (UIViewController<SSplitContentViewDelegate, SSplitControllerProtocol> *)splitRootViewController {
     if ([self.viewControllers count] > 0) {
@@ -147,11 +150,23 @@
     }
     return nil;
 }
-- (UIGestureRecognizer *)beginGesture {
-    return self.splitRootViewController.beginGesture;
+- (void)setBeginPoint:(CGPoint)abeginPoint {
+    self.splitRootViewController.beginPoint = abeginPoint;
 }
-- (UIGestureRecognizer *)moveGesture {
-    return self.splitRootViewController.moveGesture;
+- (CGPoint)beginPoint {
+    return self.splitRootViewController.beginPoint;
+}
+- (void)setMovePoint:(CGPoint)amovePoint {
+    self.splitRootViewController.movePoint = amovePoint;
+}
+- (CGPoint)movePoint {
+    return self.splitRootViewController.movePoint;
+}
+- (void)setOriginX:(CGFloat)aoriginX {
+    self.splitRootViewController.originX = aoriginX;
+}
+- (CGFloat)originX {
+    return self.splitRootViewController.originX;
 }
 - (id<SSPlitControllerDelegate>)splitControllerDelegate {
     return self.splitRootViewController.splitControllerDelegate;
@@ -178,21 +193,16 @@
 #pragma mark - tset views
 
 @implementation TestView
-@synthesize splitDelegate, beginGesture, moveGesture;
+@synthesize splitDelegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.beginGesture = nil;
-        self.moveGesture = nil;
-        
         [self addGestures];
     }
     return self;
 }
 - (void)dealloc {
-    self.beginGesture = nil;
-    self.moveGesture = nil;
     [super dealloc];
 }
 
@@ -210,27 +220,22 @@
 
 
 @implementation TestTableView
-@synthesize splitDelegate, beginGesture, moveGesture;
-@synthesize shouldSplit;
+@synthesize splitDelegate;
+@synthesize splitEnable;
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
     if (self) {
-        self.shouldSplit = YES;
+        self.splitEnable = YES;
         
         self.delegate = self;
         self.dataSource = self;
         
-        self.beginGesture = nil;
-        self.moveGesture = nil;
-        
-        //[self addGestures];
+        [self addGestures];
     }
     return self;
 }
 - (void)dealloc {
-    self.beginGesture = nil;
-    self.moveGesture = nil;
     [super dealloc];
 }
 
@@ -244,23 +249,19 @@
     return [SSplitContentUtil gestureRecognizer:gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:otherGestureRecognizer Content:self];
 }
 - (BOOL)shouldSplitWithSplitContentView:(id<SSplitContentViewProtocol>)splitContentView {
-    return self.shouldSplit;
+    return self.splitEnable;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"did scroll");
-    self.shouldSplit = NO;
+    self.splitEnable = NO;
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    NSLog(@"end dragging : %d", decelerate);
     if (!decelerate) {
-        self.shouldSplit = YES;
+        self.splitEnable = YES;
     }
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSLog(@"end decelerate");
-    self.shouldSplit = YES;
+    self.splitEnable = YES;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 100.0;
 }
@@ -280,21 +281,16 @@
 @end
 
 @implementation TestWebView
-@synthesize splitDelegate, beginGesture, moveGesture;
+@synthesize splitDelegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.beginGesture = nil;
-        self.moveGesture = nil;
-        
         [self addGestures];
     }
     return self;
 }
 - (void)dealloc {
-    self.beginGesture = nil;
-    self.moveGesture = nil;
     [super dealloc];
 }
 
@@ -311,14 +307,11 @@
 @end
 
 @implementation TestScrolView
-@synthesize splitDelegate, beginGesture, moveGesture;
+@synthesize splitDelegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.beginGesture = nil;
-        self.moveGesture = nil;
-        
         [self addGestures];
         
         self.contentSize = CGSizeMake(self.bounds.size.width*2, self.bounds.size.height*2);
@@ -326,8 +319,6 @@
     return self;
 }
 - (void)dealloc {
-    self.beginGesture = nil;
-    self.moveGesture = nil;
     [super dealloc];
 }
 
@@ -355,20 +346,16 @@
     return self;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"did scroll");
     self.splitContentViewController.splitEnable = NO;
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    NSLog(@"end dragging : %d", decelerate);
     if (!decelerate) {
         self.splitContentViewController.splitEnable = YES;
     }
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSLog(@"end decelerate");
     self.splitContentViewController.splitEnable = YES;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 100.0;
 }
