@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SSplitContentViewController.h"
-#import "SSplitViewController.h"
+#import "SSplitRootViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

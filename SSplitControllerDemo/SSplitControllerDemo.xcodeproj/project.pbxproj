@@ -13,7 +13,7 @@
 		9C6B66B115DDE217001905AE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C6B66AF15DDE217001905AE /* InfoPlist.strings */; };
 		9C6B66B315DDE217001905AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B66B215DDE217001905AE /* main.m */; };
 		9C6B66B715DDE217001905AE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B66B615DDE217001905AE /* AppDelegate.m */; };
-		9C6B66FA15DDF25F001905AE /* SSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B66F915DDF25F001905AE /* SSplitViewController.m */; };
+		9C6B66FA15DDF25F001905AE /* SSplitRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B66F915DDF25F001905AE /* SSplitRootViewController.m */; };
 		9C6B670015DDF297001905AE /* SSplitContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B66FF15DDF297001905AE /* SSplitContentViewController.m */; };
 		9C6B670C15DE464B001905AE /* SSplitContentDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B670B15DE464B001905AE /* SSplitContentDelegate.m */; };
 /* End PBXBuildFile section */
@@ -29,8 +29,8 @@
 		9C6B66B415DDE217001905AE /* SSplitControllerDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SSplitControllerDemo-Prefix.pch"; sourceTree = "<group>"; };
 		9C6B66B515DDE217001905AE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9C6B66B615DDE217001905AE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		9C6B66F815DDF25F001905AE /* SSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSplitViewController.h; sourceTree = "<group>"; };
-		9C6B66F915DDF25F001905AE /* SSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSplitViewController.m; sourceTree = "<group>"; };
+		9C6B66F815DDF25F001905AE /* SSplitRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSplitRootViewController.h; sourceTree = "<group>"; };
+		9C6B66F915DDF25F001905AE /* SSplitRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSplitRootViewController.m; sourceTree = "<group>"; };
 		9C6B66FE15DDF297001905AE /* SSplitContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSplitContentViewController.h; sourceTree = "<group>"; };
 		9C6B66FF15DDF297001905AE /* SSplitContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSplitContentViewController.m; sourceTree = "<group>"; };
 		9C6B670A15DE464B001905AE /* SSplitContentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSplitContentDelegate.h; sourceTree = "<group>"; };
@@ -84,8 +84,8 @@
 				9C6B66AD15DDE217001905AE /* Supporting Files */,
 				9C6B66B515DDE217001905AE /* AppDelegate.h */,
 				9C6B66B615DDE217001905AE /* AppDelegate.m */,
-				9C6B66F815DDF25F001905AE /* SSplitViewController.h */,
-				9C6B66F915DDF25F001905AE /* SSplitViewController.m */,
+				9C6B66F815DDF25F001905AE /* SSplitRootViewController.h */,
+				9C6B66F915DDF25F001905AE /* SSplitRootViewController.m */,
 				9C6B66FE15DDF297001905AE /* SSplitContentViewController.h */,
 				9C6B66FF15DDF297001905AE /* SSplitContentViewController.m */,
 				9C6B670A15DE464B001905AE /* SSplitContentDelegate.h */,
@@ -169,7 +169,7 @@
 			files = (
 				9C6B66B315DDE217001905AE /* main.m in Sources */,
 				9C6B66B715DDE217001905AE /* AppDelegate.m in Sources */,
-				9C6B66FA15DDF25F001905AE /* SSplitViewController.m in Sources */,
+				9C6B66FA15DDF25F001905AE /* SSplitRootViewController.m in Sources */,
 				9C6B670015DDF297001905AE /* SSplitContentViewController.m in Sources */,
 				9C6B670C15DE464B001905AE /* SSplitContentDelegate.m in Sources */,
 			);

@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 
 @interface AppDelegate()
-@property (nonatomic, retain) SSplitViewController *splitViewController;
+@property (nonatomic, retain) SSplitRootViewController *splitViewController;
 @property (nonatomic, retain) SSplitContentViewController *aSplitContentViewController;
 @property (nonatomic, retain) SSplitContentViewController *bSplitContentViewController;
 @property (nonatomic, retain) SSplitContentViewController *cSplitContentViewController;
@@ -64,7 +64,7 @@
     SSplitNavigationContentViewController *_dnv = [[SSplitNavigationContentViewController alloc] initWithRootViewController:_d];
     [_d release];
     
-    SSplitViewController *_splitVctr = [[SSplitViewController alloc] init];
+    SSplitRootViewController *_splitVctr = [[SSplitRootViewController alloc] init];
     _splitVctr.splitContentViewControllers = [NSArray arrayWithObjects:_anv, _bnv, _cnv, _dnv, nil];
     [_anv release];
     [_bnv release];

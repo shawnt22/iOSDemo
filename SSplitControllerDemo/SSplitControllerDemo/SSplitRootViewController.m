@@ -6,9 +6,9 @@
 //  Copyright (c) 2012年 滕 松. All rights reserved.
 //
 
-#import "SSplitViewController.h"
+#import "SSplitRootViewController.h"
 
-@interface SSplitViewController()
+@interface SSplitRootViewController()
 @property (nonatomic, assign) UITableView *menuTableView;
 @property (nonatomic, assign) UIViewController<SSplitControllerProtocol> *submittingSplitController;
 
@@ -19,7 +19,7 @@
 - (void)resetContentViewController;
 
 @end
-@implementation SSplitViewController
+@implementation SSplitRootViewController
 @synthesize splitContentViewControllers = _splitContentViewControllers;
 @synthesize menuTableView;
 @synthesize submittingSplitController;
