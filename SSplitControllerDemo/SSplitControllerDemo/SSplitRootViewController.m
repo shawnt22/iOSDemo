@@ -55,6 +55,7 @@
         _f.origin.y = -20;
         content.view.frame = _f;
     }
+    [self.menuTableView reloadData];
 }
 - (void)setContentSplitEnable:(BOOL)asplitEnable {
     self.contentBoard.splitEnable = asplitEnable;
@@ -67,6 +68,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor greenColor];
+    
+    UITableView *_menu = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kSplitContentOriginXSplit, self.view.bounds.size.height) style:UITableViewStylePlain];
+    _menu.delegate = self;
+    _menu.dataSource = self;
+    [self.view addSubview:_menu];
+    self.menuTableView = _menu;
+    [_menu release];
     
     SSplitContentBoard *_cb = [[SSplitContentBoard alloc] defaultSplitContentBoard];
     _cb.splitDelegate = self;
@@ -107,13 +115,17 @@
     UITableViewCell *_cell = [tableView dequeueReusableCellWithIdentifier:_identifier];
     if (!_cell) {
         _cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:_identifier] autorelease];
+        _cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    _cell.textLabel.text = [NSString stringWithFormat:@"Controller %d", indexPath.row];
+    UIViewController *_controller = [self.splitContentViewControllers objectAtIndex:indexPath.row];
+    _cell.textLabel.text = _controller.title;
     return _cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    UIViewController<SSplitControllerProtocol> *_controller = [self.splitContentViewControllers objectAtIndex:indexPath.row];
+    [self coverContentViewController:_controller Animated:YES];
 }
 
 #pragma mark content manager

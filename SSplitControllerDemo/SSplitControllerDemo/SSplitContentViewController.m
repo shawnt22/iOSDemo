@@ -54,6 +54,7 @@
 - (void)pushAction:(id)sender {
     UIViewController *controller = [[UIViewController alloc] init];
     controller.title = @"push controller";
+    controller.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -64,6 +65,9 @@
 
 - (UIViewController<SSplitControllerProtocol> *)splitViewController {
     return [SSplitContentUtil splitViewControllerWithSplitNavigationController:self];
+}
+- (UINavigationController<SSplitControllerProtocol> *)splitNavigationController {
+    return nil;
 }
 
 @end
