@@ -27,6 +27,9 @@
 - (UINavigationController<SSplitControllerProtocol> *)splitNavigationController {
     return [SSplitContentUtil splitNavigationControllerWithSplitViewController:self];
 }
+- (UIViewController<SSplitControllerProtocol> *)splitViewController {
+    return self;
+}
 
 #pragma mark controller delegate
 - (void)viewDidLoad {
@@ -59,7 +62,7 @@
     return [SSplitContentUtil splitViewControllerWithSplitNavigationController:self];
 }
 - (UINavigationController<SSplitControllerProtocol> *)splitNavigationController {
-    return nil;
+    return self;
 }
 
 @end
