@@ -15,6 +15,7 @@
 @protocol SSplitContentViewProtocol;
 @protocol SSplitContentViewDelegate <NSObject>
 @optional
+- (BOOL)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView shouldGesture:(UIGestureRecognizer *)gesture;
 - (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView beginedGesture:(UIGestureRecognizer *)gesture;
 - (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView endedGesture:(UIGestureRecognizer *)gesture;
 - (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView changedGesture:(UIGestureRecognizer *)gesture;
@@ -36,7 +37,6 @@ typedef enum {
 @property (nonatomic, assign) id<SSplitContentViewDelegate> splitDelegate;
 
 @optional
-@property (nonatomic, assign) BOOL splitEnable;         //  default is YES
 @property (nonatomic, assign) CGPoint originalPoint;
 @property (nonatomic, assign) CGPoint currentPoint;
 @property (nonatomic, assign) SSplitContentViewStatus status;

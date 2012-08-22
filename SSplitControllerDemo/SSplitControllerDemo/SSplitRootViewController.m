@@ -25,7 +25,6 @@
 @synthesize splitContentViewControllers = _splitContentViewControllers;
 @synthesize menuTableView, contentBoard;
 @synthesize currentContentViewController;
-@synthesize contentSplitEnable;
 
 #define kSplitContentOriginXSplit       260.0
 #define kSplitContentOriginXCover       0.0
@@ -57,12 +56,6 @@
     }
     [self.menuTableView reloadData];
 }
-- (void)setContentSplitEnable:(BOOL)asplitEnable {
-    self.contentBoard.splitEnable = asplitEnable;
-}
-- (BOOL)contentSplitEnable {
-    return self.contentBoard.splitEnable;
-}
 
 #pragma mark controller delegate
 - (void)viewDidLoad {
@@ -84,6 +77,18 @@
 }
 
 #pragma mark split delegate
+- (BOOL)contentSplitEnable {
+    if ([self.currentContentViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nctr = (UINavigationController *)self.currentContentViewController;
+        if ([nctr.viewControllers count] > 0) {
+            return nctr.topViewController == [nctr.viewControllers objectAtIndex:0] ? YES : NO;
+        }
+    }
+    return YES;
+}
+- (BOOL)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView shouldGesture:(UIGestureRecognizer *)gesture {
+    return self.contentSplitEnable;
+}
 - (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView beginedGesture:(UIGestureRecognizer *)gesture {}
 - (void)splitContentView:(UIView<SSplitContentViewProtocol> *)splitContentView endedGesture:(UIGestureRecognizer *)gesture {
     [self regulateContentBoardWithGesture:gesture Animated:YES];
@@ -238,12 +243,6 @@
 - (id<SSplitContentViewDelegate>)splitDelegate {
     return self.contentBoard.splitDelegate;
 }
-- (void)setSplitEnable:(BOOL)asplitEnable {
-    self.contentBoard.splitEnable = asplitEnable;
-}
-- (BOOL)splitEnable {
-    return self.contentBoard.splitEnable;
-}
 - (CGPoint)originalPoint {
     return self.contentBoard.originalPoint;
 }
@@ -257,14 +256,14 @@
 
 #pragma mark - Split Content Board
 @implementation SSplitContentBoard
-@synthesize splitDelegate, splitEnable, originalPoint, currentPoint;
+@synthesize splitDelegate, originalPoint, currentPoint;
 @synthesize status;
+@synthesize splitRootViewController;
 
 #pragma mark init & dealloc
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.splitEnable = YES;
         self.status = SSplitContentViewStatusCover;
         self.originalPoint = self.currentPoint = CGPointZero;
         [self addGestures];
@@ -307,7 +306,7 @@
 }
 - (void)responseGesture:(UIGestureRecognizer *)gesture {
     if (self.splitDelegate) {
-        if (!self.splitEnable) {
+        if ([self.splitDelegate respondsToSelector:@selector(splitContentView:shouldGesture:)] && ![self.splitDelegate splitContentView:self shouldGesture:gesture]) {
             return;
         }
         switch (gesture.state) {

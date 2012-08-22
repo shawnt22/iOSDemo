@@ -80,7 +80,8 @@
     [self.window addSubview:self.splitViewController.view];
     [_splitVctr release];
     
-    [self.splitViewController splitContentViewController:self.aSplitContentViewController Animated:YES];
+    [self.splitViewController splitContentViewController:self.aSplitContentViewController Animated:NO];
+    [self.splitViewController coverContentViewController:self.aSplitContentViewController Animated:YES];
     
     return YES;
 }

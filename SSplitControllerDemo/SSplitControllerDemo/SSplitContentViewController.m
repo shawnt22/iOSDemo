@@ -29,14 +29,6 @@
 }
 
 #pragma mark controller delegate
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [AppDelegate shareSplitRootViewController].contentSplitEnable = YES;
-}
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [AppDelegate shareSplitRootViewController].contentSplitEnable = NO;
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blueColor];
