@@ -1,0 +1,278 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9C860FB11614406A00F5701C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C860FB01614406A00F5701C /* UIKit.framework */; };
+		9C860FB31614406A00F5701C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C860FB21614406A00F5701C /* Foundation.framework */; };
+		9C860FB51614406A00F5701C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C860FB41614406A00F5701C /* CoreGraphics.framework */; };
+		9C860FBB1614406A00F5701C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C860FB91614406A00F5701C /* InfoPlist.strings */; };
+		9C860FBD1614406A00F5701C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C860FBC1614406A00F5701C /* main.m */; };
+		9C860FC11614406A00F5701C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C860FC01614406A00F5701C /* AppDelegate.m */; };
+		9C860FC31614406A00F5701C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C860FC21614406A00F5701C /* Default.png */; };
+		9C860FC51614406A00F5701C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C860FC41614406A00F5701C /* Default@2x.png */; };
+		9C860FC71614406A00F5701C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C860FC61614406A00F5701C /* Default-568h@2x.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9C860FAC1614406A00F5701C /* Flip3DDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flip3DDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C860FB01614406A00F5701C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9C860FB21614406A00F5701C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9C860FB41614406A00F5701C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9C860FB81614406A00F5701C /* Flip3DDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Flip3DDemo-Info.plist"; sourceTree = "<group>"; };
+		9C860FBA1614406A00F5701C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9C860FBC1614406A00F5701C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9C860FBE1614406A00F5701C /* Flip3DDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Flip3DDemo-Prefix.pch"; sourceTree = "<group>"; };
+		9C860FBF1614406A00F5701C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9C860FC01614406A00F5701C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9C860FC21614406A00F5701C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		9C860FC41614406A00F5701C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		9C860FC61614406A00F5701C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9C860FA91614406A00F5701C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C860FB11614406A00F5701C /* UIKit.framework in Frameworks */,
+				9C860FB31614406A00F5701C /* Foundation.framework in Frameworks */,
+				9C860FB51614406A00F5701C /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9C860FA11614406A00F5701C = {
+			isa = PBXGroup;
+			children = (
+				9C860FB61614406A00F5701C /* Flip3DDemo */,
+				9C860FAF1614406A00F5701C /* Frameworks */,
+				9C860FAD1614406A00F5701C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9C860FAD1614406A00F5701C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C860FAC1614406A00F5701C /* Flip3DDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9C860FAF1614406A00F5701C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9C860FB01614406A00F5701C /* UIKit.framework */,
+				9C860FB21614406A00F5701C /* Foundation.framework */,
+				9C860FB41614406A00F5701C /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9C860FB61614406A00F5701C /* Flip3DDemo */ = {
+			isa = PBXGroup;
+			children = (
+				9C860FBF1614406A00F5701C /* AppDelegate.h */,
+				9C860FC01614406A00F5701C /* AppDelegate.m */,
+				9C860FB71614406A00F5701C /* Supporting Files */,
+			);
+			path = Flip3DDemo;
+			sourceTree = "<group>";
+		};
+		9C860FB71614406A00F5701C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C860FB81614406A00F5701C /* Flip3DDemo-Info.plist */,
+				9C860FB91614406A00F5701C /* InfoPlist.strings */,
+				9C860FBC1614406A00F5701C /* main.m */,
+				9C860FBE1614406A00F5701C /* Flip3DDemo-Prefix.pch */,
+				9C860FC21614406A00F5701C /* Default.png */,
+				9C860FC41614406A00F5701C /* Default@2x.png */,
+				9C860FC61614406A00F5701C /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9C860FAB1614406A00F5701C /* Flip3DDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C860FCA1614406A00F5701C /* Build configuration list for PBXNativeTarget "Flip3DDemo" */;
+			buildPhases = (
+				9C860FA81614406A00F5701C /* Sources */,
+				9C860FA91614406A00F5701C /* Frameworks */,
+				9C860FAA1614406A00F5701C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Flip3DDemo;
+			productName = Flip3DDemo;
+			productReference = 9C860FAC1614406A00F5701C /* Flip3DDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C860FA31614406A00F5701C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "shawnt22@gmail.com";
+			};
+			buildConfigurationList = 9C860FA61614406A00F5701C /* Build configuration list for PBXProject "Flip3DDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9C860FA11614406A00F5701C;
+			productRefGroup = 9C860FAD1614406A00F5701C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9C860FAB1614406A00F5701C /* Flip3DDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9C860FAA1614406A00F5701C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C860FBB1614406A00F5701C /* InfoPlist.strings in Resources */,
+				9C860FC31614406A00F5701C /* Default.png in Resources */,
+				9C860FC51614406A00F5701C /* Default@2x.png in Resources */,
+				9C860FC71614406A00F5701C /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9C860FA81614406A00F5701C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C860FBD1614406A00F5701C /* main.m in Sources */,
+				9C860FC11614406A00F5701C /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9C860FB91614406A00F5701C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C860FBA1614406A00F5701C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9C860FC81614406A00F5701C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9C860FC91614406A00F5701C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9C860FCB1614406A00F5701C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Flip3DDemo/Flip3DDemo-Prefix.pch";
+				INFOPLIST_FILE = "Flip3DDemo/Flip3DDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9C860FCC1614406A00F5701C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Flip3DDemo/Flip3DDemo-Prefix.pch";
+				INFOPLIST_FILE = "Flip3DDemo/Flip3DDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9C860FA61614406A00F5701C /* Build configuration list for PBXProject "Flip3DDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C860FC81614406A00F5701C /* Debug */,
+				9C860FC91614406A00F5701C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C860FCA1614406A00F5701C /* Build configuration list for PBXNativeTarget "Flip3DDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C860FCB1614406A00F5701C /* Debug */,
+				9C860FCC1614406A00F5701C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9C860FA31614406A00F5701C /* Project object */;
+}
