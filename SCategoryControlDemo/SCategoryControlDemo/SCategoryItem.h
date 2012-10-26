@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol SCategoryItemProtocol <NSObject>
+@property (nonatomic, retain) NSString *reusableIdentifier;
 @optional
 
 @end

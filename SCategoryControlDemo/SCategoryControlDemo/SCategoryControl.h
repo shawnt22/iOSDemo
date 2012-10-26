@@ -35,6 +35,8 @@ NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
 @property (nonatomic, assign) id<SCategoryControlDataSource> controlDataSource;
 @property (nonatomic, assign) id<SCategoryControlDelegate> controlDelegate;
 
+
 - (UIView<SCategoryItemProtocol> *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
+- (void)reloadControl;
 
 @end

@@ -13,6 +13,11 @@
 @property (nonatomic, retain) NSMutableDictionary *reusableItems;
 @property (nonatomic, retain) NSMutableDictionary *activingItems;
 
+- (void)addItem:(UIView<SCategoryItemProtocol> *)item withIdentifier:(NSString *)identifier toStorage:(NSMutableDictionary *)storage;
+- (UIView<SCategoryItemProtocol> *)dequeueItemWithIdentifier:(NSString *)identifier inStorage:(NSMutableDictionary *)storage;
+- (void)clearControl;
+- (void)check;
+
 @end
 
 #pragma mark - Notify
@@ -67,18 +72,41 @@
 
 #pragma mark item manager
 - (UIView<SCategoryItemProtocol> *)dequeueReusableItemWithIdentifier:(NSString *)identifier {
-    UIView<SCategoryItemProtocol> *_item = nil;
-    
-    _item = [[self.reusableItems objectForKey:identifier] lastObject];
-    if (_item) {
-        
+    return [self dequeueItemWithIdentifier:identifier inStorage:self.reusableItems];
+}
+- (void)addItem:(UIView<SCategoryItemProtocol> *)item withIdentifier:(NSString *)identifier toStorage:(NSMutableDictionary *)storage {
+    if (!item) {
+        return;
     }
+    NSMutableArray *_items = [storage objectForKey:identifier];
+    if (!_items) {
+        _items = [NSMutableArray array];
+        [storage setObject:_items forKey:identifier];
+    }
+    [_items addObject:item];
+}
+- (UIView<SCategoryItemProtocol> *)dequeueItemWithIdentifier:(NSString *)identifier inStorage:(NSMutableDictionary *)storage {
+    NSMutableArray *_items = [storage objectForKey:identifier];
+    if (!_items) {
+        _items = [NSMutableArray array];
+        [storage setObject:_items forKey:identifier];
+    }
+    return [_items lastObject];
+}
+- (void)reloadControl {
+    [self clearControl];
     
-    return _item;
+    
+}
+- (void)clearControl {
+    
 }
 
 #pragma mark scroll delegae
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self check];
+}
+- (void)check {
     
 }
 
