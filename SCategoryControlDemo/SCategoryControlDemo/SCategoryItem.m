@@ -8,17 +8,40 @@
 
 #import "SCategoryItem.h"
 
-@interface SCategoryItem()
-
+@interface SCategoryItem (Draw)
+- (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect;
 @end
-@implementation SCategoryItem
+@implementation SCategoryItem (Draw)
+- (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect {
+    CGContextSaveGState(context);
+    
+    
+    
+    CGContextRestoreGState(context);
+}
+@end
 
-- (id)initWithFrame:(CGRect)frame {
+@implementation SCategoryItem
+@synthesize reusableIdentifier, itemIndexPath;
+
+- (id)initWithFrame:(CGRect)frame ReusableIdentifier:(NSString *)rIdentifier {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.contentMode = UIViewContentModeRedraw;
+        self.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+        self.reusableIdentifier = rIdentifier;
     }
     return self;
+}
+- (void)dealloc {
+    self.reusableIdentifier = nil;
+    [super dealloc];
+}
+- (void)drawRect:(CGRect)rect {
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextClearRect(context, rect);
+    
+    [self drawBackgroundWithContext:context Rect:rect];
 }
 
 @end

@@ -8,12 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+typedef struct {
+    NSInteger column;
+}SCategoryIndexPath;
+
+NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
+    SCategoryIndexPath indexPath;
+    indexPath.column = _column;
+    return indexPath;
+}
+
 @protocol SCategoryItemProtocol <NSObject>
 @property (nonatomic, retain) NSString *reusableIdentifier;
 @optional
-
+@property (nonatomic, assign) SCategoryIndexPath itemIndexPath;
 @end
 
-@interface SCategoryItem : UIView
+@interface SCategoryItem : UIView<SCategoryItemProtocol>
+
+- (id)initWithFrame:(CGRect)frame ReusableIdentifier:(NSString *)reusableIdentifier;
 
 @end

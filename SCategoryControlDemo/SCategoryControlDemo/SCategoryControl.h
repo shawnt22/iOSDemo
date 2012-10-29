@@ -9,20 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "SCategoryItem.h"
 
-typedef struct {
-    NSInteger column;
-}SCategoryIndexPath;
-
-NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
-    SCategoryIndexPath indexPath;
-    indexPath.column = _column;
-    return indexPath;
-}
-
 @class SCategoryControl;
 @protocol SCategoryControlDataSource <NSObject>
 @required
 - (NSInteger)numberOfColumnInCategoryControl:(SCategoryControl *)categoryControl;
+- (CGFloat)categoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath;
 - (UIView<SCategoryItemProtocol> *)categoryControl:(SCategoryControl *)categoryControl itemAtIndexPath:(SCategoryIndexPath)indexPath;
 @end
 
@@ -34,7 +25,6 @@ NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
 @interface SCategoryControl : UIView <UIScrollViewDelegate>
 @property (nonatomic, assign) id<SCategoryControlDataSource> controlDataSource;
 @property (nonatomic, assign) id<SCategoryControlDelegate> controlDelegate;
-
 
 - (UIView<SCategoryItemProtocol> *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
 - (void)reloadControl;
