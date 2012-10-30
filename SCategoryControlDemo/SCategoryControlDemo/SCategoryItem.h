@@ -25,6 +25,9 @@ NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
 @end
 
 @interface SCategoryItem : UIView<SCategoryItemProtocol>
+@property (nonatomic, retain) UIColor *bgColor;
+@property (nonatomic, retain) UIColor *contentColor;
+@property (nonatomic, retain) UIFont *contentFont;
 
 - (id)initWithFrame:(CGRect)frame ReusableIdentifier:(NSString *)reusableIdentifier;
 

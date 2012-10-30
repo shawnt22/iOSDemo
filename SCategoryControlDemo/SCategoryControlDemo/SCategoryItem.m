@@ -10,11 +10,30 @@
 
 @interface SCategoryItem (Draw)
 - (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect;
+- (void)drawContentWithContext:(CGContextRef)context Rect:(CGRect)rect;
 @end
 @implementation SCategoryItem (Draw)
 - (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect {
     CGContextSaveGState(context);
     
+    CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
+    
+    CGFloat _r = rect.size.height / 2;
+    CGContextMoveToPoint(context, rect.origin.x, rect.origin.y+rect.size.height/2);
+    CGContextAddArcToPoint(context, rect.origin.x, rect.origin.y, rect.origin.x+rect.size.width/2, rect.origin.y, _r);
+    CGContextAddArcToPoint(context, rect.origin.x+rect.size.width, rect.origin.y, rect.origin.x+rect.size.width, rect.origin.y+rect.size.height/2, _r);
+    CGContextAddArcToPoint(context, rect.origin.x+rect.size.width, rect.origin.y+rect.size.height, rect.origin.x+rect.size.width/2, rect.origin.y+rect.size.height, _r);
+    CGContextAddArcToPoint(context, rect.origin.x, rect.origin.y+rect.size.height, rect.origin.x, rect.origin.y+rect.size.height/2, _r);
+    CGContextClosePath(context);
+    
+    CGContextFillPath(context);
+    
+    CGContextRestoreGState(context);
+}
+- (void)drawContentWithContext:(CGContextRef)context Rect:(CGRect)rect {
+    CGContextSaveGState(context);
+    
+    [[UIColor whiteColor] set];
     
     
     CGContextRestoreGState(context);
@@ -23,6 +42,7 @@
 
 @implementation SCategoryItem
 @synthesize reusableIdentifier, itemIndexPath;
+@synthesize bgColor, contentColor, contentFont;
 
 - (id)initWithFrame:(CGRect)frame ReusableIdentifier:(NSString *)rIdentifier {
     self = [super initWithFrame:frame];
@@ -42,6 +62,7 @@
     CGContextClearRect(context, rect);
     
     [self drawBackgroundWithContext:context Rect:rect];
+    [self drawContentWithContext:context Rect:rect];
 }
 
 @end
