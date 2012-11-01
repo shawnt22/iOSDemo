@@ -25,7 +25,7 @@
     
     
     SCategoryItem *_item = [[SCategoryItem alloc] defaultItemWithReusableIdentifier:@"aa"];
-    [_item refreshItemWithContent:@"category" Frame:CGRectMake(100, 100, 100, kCategoryItemDefaultHeight)];
+    [_item refreshItemWithContent:@"category" Frame:CGRectMake(100, 100, 100, kCategoryItemHeightDefault)];
     [self.window addSubview:_item];
     [_item release];
     

@@ -67,7 +67,7 @@
         self.backgroundColor = [UIColor clearColor];
         self.reusableIdentifier = rIdentifier;
         
-        self.bgColor = [UIColor colorWithRed:(50/255.0) green:(51/255.0) blue:(56/255.0) alpha:1.0];
+        self.bgColor = kCategoryItemBGColorNormalDefault;
         self.innerShadowColor = [UIColor colorWithRed:(68/255.0) green:(71/255.0) blue:(77/255.0) alpha:1.0];
         self.contentColor = [UIColor whiteColor];
         self.contentFont = [UIFont systemFontOfSize:12];
