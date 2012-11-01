@@ -9,8 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "SCategoryControl.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, SCategoryControlDataSource>
 
 @property (strong, nonatomic) UIWindow *window;
 
+@end
+
+@interface Category : NSObject
+
+@property (nonatomic, retain) NSString *content;
+@property (nonatomic, assign) CGRect itemFrame;
+
+@end
+
+@interface Category(Test)
++ (NSMutableArray *)testCategories;
++ (Category *)randomContentCategory;
 @end

@@ -22,6 +22,9 @@
 
 @end
 
+#define k_categorycontrol_height 40.0
+#define k_categorycontrol_item_margin_left 5.0
+#define k_categorycontrol_item_margin_top 3.0
 @interface SCategoryControl : UIView <UIScrollViewDelegate>
 @property (nonatomic, assign) id<SCategoryControlDataSource> controlDataSource;
 @property (nonatomic, assign) id<SCategoryControlDelegate> controlDelegate;

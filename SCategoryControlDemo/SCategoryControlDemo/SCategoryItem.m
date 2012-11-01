@@ -8,6 +8,8 @@
 
 #import "SCategoryItem.h"
 
+#define k_category_item_content_linebreak_mode NSLineBreakByWordWrapping
+
 @interface SCategoryItem()
 @property (nonatomic, assign) CGFloat radius;
 @end
@@ -38,9 +40,9 @@
     CGContextSaveGState(context);
     
     [self.contentColor set];
-    NSLineBreakMode _lineBreadMode = NSLineBreakByWordWrapping;
+    NSLineBreakMode _lineBreadMode = k_category_item_content_linebreak_mode;
     
-    CGSize _contentSize = [self.content sizeWithFont:self.contentFont constrainedToSize:rect.size lineBreakMode:_lineBreadMode];
+    CGSize _contentSize = [self.content sizeWithFont:self.contentFont constrainedToSize:self.contentConstrainedToSize lineBreakMode:_lineBreadMode];
     rect = CGRectMake(ceilf(rect.origin.x+(rect.size.width-_contentSize.width)/2), ceilf(rect.origin.y+(rect.size.height-_contentSize.height)/2), _contentSize.width, _contentSize.height);
     [self.content drawInRect:rect withFont:self.contentFont lineBreakMode:_lineBreadMode];
     
@@ -51,7 +53,7 @@
 @implementation SCategoryItem
 @synthesize radius, innerShadowHeight;
 @synthesize reusableIdentifier, itemIndexPath;
-@synthesize bgColor, innerShadowColor, contentColor, contentFont, borderWidth, borderColor;
+@synthesize bgColor, innerShadowColor, contentColor, contentFont, contentConstrainedToSize, borderWidth, borderColor;
 @synthesize content;
 
 - (SCategoryItem *)defaultItemWithReusableIdentifier:(NSString *)rIdentifier {
@@ -69,12 +71,13 @@
         
         self.bgColor = k_category_item_bgcolor_normal_default;
         self.innerShadowColor = [UIColor colorWithRed:(68/255.0) green:(71/255.0) blue:(77/255.0) alpha:1.0];
-        self.contentColor = [UIColor whiteColor];
-        self.contentFont = [UIFont systemFontOfSize:12];
         self.borderColor = [UIColor colorWithRed:(25/255.0) green:(25/255.0) blue:(27/255.0) alpha:1.0];
         self.borderWidth = 1.0;
         
+        self.contentColor = [UIColor whiteColor];
+        self.contentFont = k_category_item_content_font;
         self.content = nil;
+        self.contentConstrainedToSize = k_category_item_content_constrained_size;
         
         self.innerShadowHeight = 1.0;
     }
@@ -93,6 +96,10 @@
     self.frame = frm;
     self.content = cnt;
     [self setNeedsDisplay];
+}
++ (CGSize)itemSizeWithContent:(NSString *)cnt Font:(UIFont *)fnt ConstrainedToSize:(CGSize)sze {
+    CGSize _cntSize = [cnt sizeWithFont:fnt constrainedToSize:sze lineBreakMode:k_category_item_content_linebreak_mode];
+    return CGSizeMake(_cntSize.width+k_category_item_height_default, k_category_item_height_default);
 }
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();

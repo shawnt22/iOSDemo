@@ -25,6 +25,8 @@ NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
 @end
 
 #define k_category_item_height_default 30.0
+#define k_category_item_content_constrained_size CGSizeMake(100, k_category_item_height_default - 4)
+#define k_category_item_content_font [UIFont systemFontOfSize:12]
 #define k_category_item_bgcolor_normal_default [UIColor colorWithRed:(50/255.0) green:(51/255.0) blue:(56/255.0) alpha:1.0]
 #define k_category_item_bgcolor_hightlighted_default [UIColor colorWithRed:(255/255.0) green:(72/255.0) blue:(0/255.0) alpha:1.0]
 
@@ -37,11 +39,13 @@ NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
 
 @property (nonatomic, retain) UIColor *contentColor;
 @property (nonatomic, retain) UIFont *contentFont;
+@property (nonatomic, assign) CGSize contentConstrainedToSize;
 @property (nonatomic, retain) NSString *content;
 
 - (SCategoryItem *)defaultItemWithReusableIdentifier:(NSString *)reusableIdentifier;
 - (id)initWithFrame:(CGRect)frame ReusableIdentifier:(NSString *)reusableIdentifier;
 
 - (void)refreshItemWithContent:(NSString *)content Frame:(CGRect)frame;
++ (CGSize)itemSizeWithContent:(NSString *)content Font:(UIFont *)font ConstrainedToSize:(CGSize)size;
 
 @end

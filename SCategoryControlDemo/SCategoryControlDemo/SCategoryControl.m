@@ -209,10 +209,10 @@
     }
 }
 - (CGSize)controlContentSize {
-    CGFloat _width = self.bounds.size.width;
+    CGFloat _width = 0.0;
     NSInteger _number = [self notifyNumberOfColumnInCategoryControl:self];
     for (NSInteger _column = 0; _column < _number; _column++) {
-        _width += [self notifyCategoryControl:self widthAtIndexPath:SCategoryIndexPathMake(_column)];
+        _width += [self notifyCategoryControl:self widthAtIndexPath:SCategoryIndexPathMake(_column)] + k_categorycontrol_item_margin_left;
     }
     return CGSizeMake(_width, self.bounds.size.height);
 }
