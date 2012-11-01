@@ -8,17 +8,21 @@
 
 #import "SCategoryItem.h"
 
+@interface SCategoryItem()
+@property (nonatomic, assign) CGFloat radius;
+@end
+
 @interface SCategoryItem (Draw)
-- (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect;
+- (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect FillColor:(UIColor *)fillColor;
 - (void)drawContentWithContext:(CGContextRef)context Rect:(CGRect)rect;
 @end
 @implementation SCategoryItem (Draw)
-- (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect {
+- (void)drawBackgroundWithContext:(CGContextRef)context Rect:(CGRect)rect FillColor:(UIColor *)fillColor {
     CGContextSaveGState(context);
     
-    CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
+    CGContextSetFillColorWithColor(context, fillColor.CGColor);
+    CGFloat _r = self.radius;
     
-    CGFloat _r = rect.size.height / 2;
     CGContextMoveToPoint(context, rect.origin.x, rect.origin.y+rect.size.height/2);
     CGContextAddArcToPoint(context, rect.origin.x, rect.origin.y, rect.origin.x+rect.size.width/2, rect.origin.y, _r);
     CGContextAddArcToPoint(context, rect.origin.x+rect.size.width, rect.origin.y, rect.origin.x+rect.size.width, rect.origin.y+rect.size.height/2, _r);
@@ -33,36 +37,78 @@
 - (void)drawContentWithContext:(CGContextRef)context Rect:(CGRect)rect {
     CGContextSaveGState(context);
     
-    [[UIColor whiteColor] set];
+    [self.contentColor set];
+    NSLineBreakMode _lineBreadMode = NSLineBreakByWordWrapping;
     
+    CGSize _contentSize = [self.content sizeWithFont:self.contentFont constrainedToSize:rect.size lineBreakMode:_lineBreadMode];
+    rect = CGRectMake(ceilf(rect.origin.x+(rect.size.width-_contentSize.width)/2), ceilf(rect.origin.y+(rect.size.height-_contentSize.height)/2), _contentSize.width, _contentSize.height);
+    [self.content drawInRect:rect withFont:self.contentFont lineBreakMode:_lineBreadMode];
     
     CGContextRestoreGState(context);
 }
 @end
 
 @implementation SCategoryItem
+@synthesize radius, innerShadowHeight;
 @synthesize reusableIdentifier, itemIndexPath;
-@synthesize bgColor, contentColor, contentFont;
+@synthesize bgColor, innerShadowColor, contentColor, contentFont, borderWidth, borderColor;
+@synthesize content;
 
+- (SCategoryItem *)defaultItemWithReusableIdentifier:(NSString *)rIdentifier {
+    self = [self initWithFrame:CGRectZero ReusableIdentifier:rIdentifier];
+    if (self) {
+    }
+    return self;
+}
 - (id)initWithFrame:(CGRect)frame ReusableIdentifier:(NSString *)rIdentifier {
     self = [super initWithFrame:frame];
     if (self) {
         self.contentMode = UIViewContentModeRedraw;
-        self.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+        self.backgroundColor = [UIColor clearColor];
         self.reusableIdentifier = rIdentifier;
+        
+        self.bgColor = [UIColor colorWithRed:(50/255.0) green:(51/255.0) blue:(56/255.0) alpha:1.0];
+        self.innerShadowColor = [UIColor colorWithRed:(68/255.0) green:(71/255.0) blue:(77/255.0) alpha:1.0];
+        self.contentColor = [UIColor whiteColor];
+        self.contentFont = [UIFont systemFontOfSize:12];
+        self.borderColor = [UIColor colorWithRed:(25/255.0) green:(25/255.0) blue:(27/255.0) alpha:1.0];
+        self.borderWidth = 1.0;
+        
+        self.content = nil;
+        
+        self.innerShadowHeight = 1.0;
     }
     return self;
 }
 - (void)dealloc {
+    self.bgColor = nil;
+    self.innerShadowColor = nil;
+    self.contentFont = nil;
+    self.contentColor = nil;
+    self.borderColor = nil;
     self.reusableIdentifier = nil;
     [super dealloc];
+}
+- (void)refreshItemWithContent:(NSString *)cnt Frame:(CGRect)frm {
+    self.frame = frm;
+    self.content = cnt;
+    [self setNeedsDisplay];
 }
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
     
-    [self drawBackgroundWithContext:context Rect:rect];
-    [self drawContentWithContext:context Rect:rect];
+    //  border
+    CGRect originalRect = rect;
+    self.radius = ceilf(originalRect.size.height / 2.0);
+    [self drawBackgroundWithContext:context Rect:originalRect FillColor:self.borderColor];
+    rect = CGRectInset(originalRect, self.borderWidth, self.borderWidth);
+    //  inner shadow
+    [self drawBackgroundWithContext:context Rect:rect FillColor:self.innerShadowColor];
+    //  bg
+    [self drawBackgroundWithContext:context Rect:CGRectMake(rect.origin.x, rect.origin.y+self.innerShadowHeight, rect.size.width, rect.size.height-self.innerShadowHeight) FillColor:self.bgColor];
+    //  content
+    [self drawContentWithContext:context Rect:CGRectMake(self.radius, 0, rect.size.width-2*self.radius, rect.size.height)];
 }
 
 @end

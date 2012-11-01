@@ -20,8 +20,16 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     [self.window makeKeyAndVisible];
+    
+    
+    SCategoryItem *_item = [[SCategoryItem alloc] defaultItemWithReusableIdentifier:@"aa"];
+    [_item refreshItemWithContent:@"category" Frame:CGRectMake(100, 100, 100, kCategoryItemDefaultHeight)];
+    [self.window addSubview:_item];
+    [_item release];
+    
+    
     return YES;
 }
 
