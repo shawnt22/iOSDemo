@@ -24,9 +24,9 @@ NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
 @property (nonatomic, assign) SCategoryIndexPath itemIndexPath;
 @end
 
-#define kCategoryItemHeightDefault 30.0
-#define kCategoryItemBGColorNormalDefault [UIColor colorWithRed:(50/255.0) green:(51/255.0) blue:(56/255.0) alpha:1.0]
-#define kCategoryItemBGColorHighlightedDefault [UIColor colorWithRed:(255/255.0) green:(72/255.0) blue:(0/255.0) alpha:1.0]
+#define k_category_item_height_default 30.0
+#define k_category_item_bgcolor_normal_default [UIColor colorWithRed:(50/255.0) green:(51/255.0) blue:(56/255.0) alpha:1.0]
+#define k_category_item_bgcolor_hightlighted_default [UIColor colorWithRed:(255/255.0) green:(72/255.0) blue:(0/255.0) alpha:1.0]
 
 @interface SCategoryItem : UIView<SCategoryItemProtocol>
 @property (nonatomic, retain) UIColor *bgColor;
