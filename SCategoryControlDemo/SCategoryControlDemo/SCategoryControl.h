@@ -12,9 +12,11 @@
 @class SCategoryControl;
 @protocol SCategoryControlDataSource <NSObject>
 @required
-- (NSInteger)numberOfColumnInCategoryControl:(SCategoryControl *)categoryControl;
-- (CGFloat)categoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath;
 - (UIView<SCategoryItemProtocol> *)categoryControl:(SCategoryControl *)categoryControl itemAtIndexPath:(SCategoryIndexPath)indexPath;
+- (NSInteger)itemNumberOfCategoryControl:(SCategoryControl *)categoryControl;
+- (CGFloat)categoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath;
+- (CGFloat)categoryControl:(SCategoryControl *)categoryControl heightAtIndexPath:(SCategoryIndexPath)indexPath;
+- (CGFloat)categoryControl:(SCategoryControl *)categoryControl marginLeftAtIndexPath:(SCategoryIndexPath)indexPath;
 @end
 
 @protocol SCategoryControlDelegate <NSObject>
@@ -24,7 +26,6 @@
 
 #define k_categorycontrol_height 40.0
 #define k_categorycontrol_item_margin_left 5.0
-#define k_categorycontrol_item_margin_top 3.0
 @interface SCategoryControl : UIView <UIScrollViewDelegate>
 @property (nonatomic, assign) id<SCategoryControlDataSource> controlDataSource;
 @property (nonatomic, assign) id<SCategoryControlDelegate> controlDelegate;

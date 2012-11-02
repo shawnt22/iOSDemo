@@ -18,36 +18,55 @@
 - (UIView<SCategoryItemProtocol> *)dequeueItemWithIdentifier:(NSString *)identifier inStorage:(NSMutableDictionary *)storage;
 - (void)clearControl;
 - (void)check;
+- (CGRect)itemFrameAtIndexPath:(SCategoryIndexPath)indexPath;
 - (CGSize)controlContentSize;
 - (void)fillFreeFieldWithLeftItem:(UIView<SCategoryItemProtocol> *)leftItem RightItem:(UIView<SCategoryItemProtocol> *)rightItem visiableItems:(NSMutableArray *)items visiableRect:(CGRect)visiableRect;
-- (void)appearItem:(UIView<SCategoryItemProtocol> *)item;
+- (void)appearItem:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath;
 - (void)disappearItem:(UIView<SCategoryItemProtocol> *)item;
+
+- (BOOL)isAvalidIndexPath:(SCategoryIndexPath)indexPath;
 
 @end
 
 #pragma mark - Notify
 @interface SCategoryControl(Notify)
-- (NSInteger)notifyNumberOfColumnInCategoryControl:(SCategoryControl *)categoryControl;
-- (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath;
 - (UIView<SCategoryItemProtocol> *)notifyCategoryControl:(SCategoryControl *)categoryControl itemAtIndexPath:(SCategoryIndexPath)indexPath;
+- (NSInteger)notifyItemNumberOfCategoryControl:(SCategoryControl *)categoryControl;
+- (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath;
+- (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl heightAtIndexPath:(SCategoryIndexPath)indexPath;
+- (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl marginLeftAtIndexPath:(SCategoryIndexPath)indexPath;
 @end
 
 @implementation SCategoryControl(Notify)
-- (NSInteger)notifyNumberOfColumnInCategoryControl:(SCategoryControl *)categoryControl {
-    if (self.controlDataSource && [self.controlDataSource respondsToSelector:@selector(numberOfColumnInCategoryControl:)]) {
-        return [self.controlDataSource numberOfColumnInCategoryControl:categoryControl];
+- (NSInteger)notifyItemNumberOfCategoryControl:(SCategoryControl *)categoryControl {
+    if (self.controlDataSource && [self.controlDataSource respondsToSelector:@selector(itemNumberOfCategoryControl:)]) {
+        return [self.controlDataSource itemNumberOfCategoryControl:categoryControl];
     }
     return 0;
 }
 - (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath {
-    if (self.controlDataSource && [self.controlDataSource respondsToSelector:@selector(categoryControl:widthAtIndexPath:)]) {
+    if (self.controlDataSource && [self isAvalidIndexPath:indexPath] && [self.controlDataSource respondsToSelector:@selector(categoryControl:widthAtIndexPath:)]) {
         return [self.controlDataSource categoryControl:categoryControl widthAtIndexPath:indexPath];
     }
-    return 0.0;
+    return 0.0f;
+}
+- (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl heightAtIndexPath:(SCategoryIndexPath)indexPath {
+    if (self.controlDataSource && [self isAvalidIndexPath:indexPath] && [self.controlDataSource respondsToSelector:@selector(categoryControl:heightAtIndexPath:)]) {
+        return [self.controlDataSource categoryControl:categoryControl heightAtIndexPath:indexPath];
+    }
+    return 0.0f;
+}
+- (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl marginLeftAtIndexPath:(SCategoryIndexPath)indexPath {
+    if (self.controlDataSource && [self isAvalidIndexPath:indexPath] && [self.controlDataSource respondsToSelector:@selector(categoryControl:marginLeftAtIndexPath:)]) {
+        return [self.controlDataSource categoryControl:categoryControl marginLeftAtIndexPath:indexPath];
+    }
+    return k_categorycontrol_item_margin_left;
 }
 - (UIView<SCategoryItemProtocol> *)notifyCategoryControl:(SCategoryControl *)categoryControl itemAtIndexPath:(SCategoryIndexPath)indexPath {
-    if (self.controlDataSource && [self.controlDataSource respondsToSelector:@selector(categoryControl:itemAtIndexPath:)]) {
-        return [self.controlDataSource categoryControl:categoryControl itemAtIndexPath:indexPath];
+    if (self.controlDataSource && [self isAvalidIndexPath:indexPath] && [self.controlDataSource respondsToSelector:@selector(categoryControl:itemAtIndexPath:)]) {
+        UIView<SCategoryItemProtocol> *_result = [self.controlDataSource categoryControl:categoryControl itemAtIndexPath:indexPath];
+        _result.itemIndexPath = indexPath;
+        return _result;
     }
     return nil;
 }
@@ -68,6 +87,8 @@
         
         UIScrollView *_scroll = [[UIScrollView alloc] initWithFrame:self.bounds];
         _scroll.backgroundColor = self.backgroundColor;
+        _scroll.showsHorizontalScrollIndicator = NO;
+        _scroll.showsVerticalScrollIndicator = NO;
         _scroll.delegate = self;
         [self addSubview:_scroll];
         self.controlScrollView = _scroll;
@@ -124,7 +145,9 @@
     self.reusableStorage = [NSMutableDictionary dictionary];
     self.activingItems = [NSMutableArray array];
 }
-- (void)appearItem:(UIView<SCategoryItemProtocol> *)item {
+- (void)appearItem:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath {
+    item.frame = [self itemFrameAtIndexPath:indexPath];
+    
     [self.controlScrollView addSubview:item];
     [self.controlScrollView sendSubviewToBack:item];
     [self.activingItems addObject:item];
@@ -136,6 +159,9 @@
         [item removeFromSuperview];
     }
     [self.activingItems removeObject:item];
+}
+- (BOOL)isAvalidIndexPath:(SCategoryIndexPath)indexPath {
+    return indexPath.column > -1 && indexPath.column < [self notifyItemNumberOfCategoryControl:self] ? YES : NO;
 }
 
 #pragma mark scroll delegae
@@ -178,9 +204,10 @@
     BOOL _needRecall = NO;
     //  区域尚无item，直接添加第一个
     if (!leftItem && !rightItem) {
-        UIView<SCategoryItemProtocol> *_item = [self notifyCategoryControl:self itemAtIndexPath:SCategoryIndexPathMake(0)];
+        SCategoryIndexPath _indexPath = SCategoryIndexPathMake(0);
+        UIView<SCategoryItemProtocol> *_item = [self notifyCategoryControl:self itemAtIndexPath:_indexPath];
         if (_item) {
-            [self appearItem:_item];
+            [self appearItem:_item indexPath:_indexPath];
             leftItem = _item;
             rightItem = _item;
             _needRecall = YES;
@@ -188,18 +215,20 @@
     }
     //  若左方未填满，则在左方添加一个item
     if (leftItem && leftItem.frame.origin.x > visiableRect.origin.x) {
-        UIView<SCategoryItemProtocol> *_item = [self notifyCategoryControl:self itemAtIndexPath:SCategoryIndexPathMake(leftItem.itemIndexPath.column-1)];
+        SCategoryIndexPath _indexPath = SCategoryIndexPathMake(leftItem.itemIndexPath.column - 1);
+        UIView<SCategoryItemProtocol> *_item = [self notifyCategoryControl:self itemAtIndexPath:_indexPath];
         if (_item) {
-            [self appearItem:_item];
+            [self appearItem:_item indexPath:_indexPath];
             leftItem = _item;
             _needRecall = YES;
         }
     }
     //  若右方未填满，则在右方添加一个item
     if (rightItem && rightItem.frame.origin.x+rightItem.frame.size.width < visiableRect.origin.x+visiableRect.size.width) {
-        UIView<SCategoryItemProtocol> *_item = [self notifyCategoryControl:self itemAtIndexPath:SCategoryIndexPathMake(rightItem.itemIndexPath.column+1)];
+        SCategoryIndexPath _indexPath = SCategoryIndexPathMake(rightItem.itemIndexPath.column + 1);
+        UIView<SCategoryItemProtocol> *_item = [self notifyCategoryControl:self itemAtIndexPath:_indexPath];
         if (_item) {
-            [self appearItem:_item];
+            [self appearItem:_item indexPath:_indexPath];
             rightItem = _item;
             _needRecall = YES;
         }
@@ -209,12 +238,31 @@
     }
 }
 - (CGSize)controlContentSize {
-    CGFloat _width = 0.0;
-    NSInteger _number = [self notifyNumberOfColumnInCategoryControl:self];
-    for (NSInteger _column = 0; _column < _number; _column++) {
-        _width += [self notifyCategoryControl:self widthAtIndexPath:SCategoryIndexPathMake(_column)] + k_categorycontrol_item_margin_left;
+    CGSize _contentSize = CGSizeZero;
+    for (NSInteger index = 0; index < [self notifyItemNumberOfCategoryControl:self]; index++) {
+        SCategoryIndexPath _indexPath = SCategoryIndexPathMake(index);
+        CGFloat _marginLeft = [self notifyCategoryControl:self marginLeftAtIndexPath:_indexPath];
+        _contentSize.width += (index == 0 ? 0 : _marginLeft) + [self notifyCategoryControl:self widthAtIndexPath:_indexPath];
     }
-    return CGSizeMake(_width, self.bounds.size.height);
+    _contentSize.width = _contentSize.width > self.controlScrollView.bounds.size.width ? _contentSize.width : self.controlScrollView.bounds.size.width + 1;
+    _contentSize.height = self.controlScrollView.bounds.size.height;
+    return _contentSize;
+}
+- (CGRect)itemFrameAtIndexPath:(SCategoryIndexPath)indexPath {
+    CGFloat _width = [self notifyCategoryControl:self widthAtIndexPath:indexPath];
+    CGFloat _height = [self notifyCategoryControl:self heightAtIndexPath:indexPath];
+    CGFloat _y = ceilf((self.controlScrollView.bounds.size.height - _height)/2);
+    
+    CGFloat _x = 0.0;
+    for (NSInteger index = 0; index < indexPath.column; index++) {
+        SCategoryIndexPath _indexPath = SCategoryIndexPathMake(index);
+        CGFloat _mleft = [self notifyCategoryControl:self marginLeftAtIndexPath:_indexPath];
+        _x += _mleft + [self notifyCategoryControl:self widthAtIndexPath:_indexPath];
+    }
+    _x = _x > 0.0 ? _x : 0.0;
+    
+    return CGRectMake(_x, _y, _width, _height);
 }
 
 @end
+

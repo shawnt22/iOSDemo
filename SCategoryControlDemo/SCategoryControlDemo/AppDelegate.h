@@ -19,6 +19,7 @@
 
 @property (nonatomic, retain) NSString *content;
 @property (nonatomic, assign) CGRect itemFrame;
+@property (nonatomic, assign) CGSize itemSize;
 
 @end
 

@@ -28,12 +28,6 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    
-//    SCategoryItem *_item = [[SCategoryItem alloc] defaultItemWithReusableIdentifier:@"aa"];
-//    [_item refreshItemWithContent:@"category" Frame:CGRectMake(100, 100, 100, k_category_item_height_default)];
-//    [self.window addSubview:_item];
-//    [_item release];
-    
     self.categories = [Category testCategories];
     
     SCategoryControl *_control = [[SCategoryControl alloc] initWithFrame:CGRectMake(10, 100, self.window.bounds.size.width-20, k_categorycontrol_height)];
@@ -48,12 +42,19 @@
 }
 
 #pragma mark category control datasource
-- (NSInteger)numberOfColumnInCategoryControl:(SCategoryControl *)categoryControl {
+- (NSInteger)itemNumberOfCategoryControl:(SCategoryControl *)categoryControl {
     return [self.categories count];
 }
 - (CGFloat)categoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath {
     Category *_category = [self.categories objectAtIndex:indexPath.column];
-    return _category.itemFrame.size.width;
+    return _category.itemSize.width;
+}
+- (CGFloat)categoryControl:(SCategoryControl *)categoryControl heightAtIndexPath:(SCategoryIndexPath)indexPath {
+    Category *_category = [self.categories objectAtIndex:indexPath.column];
+    return _category.itemSize.height;
+}
+- (CGFloat)categoryControl:(SCategoryControl *)categoryControl marginLeftAtIndexPath:(SCategoryIndexPath)indexPath {
+    return k_categorycontrol_item_margin_left;
 }
 - (UIView<SCategoryItemProtocol> *)categoryControl:(SCategoryControl *)categoryControl itemAtIndexPath:(SCategoryIndexPath)indexPath {
     NSString *_identifier = @"item";
@@ -62,7 +63,6 @@
     if (!_item) {
         _item = [[[SCategoryItem alloc] defaultItemWithReusableIdentifier:_identifier] autorelease];
     }
-    _item.itemIndexPath = indexPath;
     Category *_category = [self.categories objectAtIndex:indexPath.column];
     [_item refreshItemWithContent:_category.content Frame:_category.itemFrame];
     
@@ -101,7 +101,7 @@
 
 
 @implementation Category
-@synthesize content, itemFrame;
+@synthesize content, itemSize, itemFrame;
 
 - (void)dealloc {
     self.content = nil;
@@ -114,19 +114,11 @@
 
 + (NSMutableArray *)testCategories {
     NSMutableArray *_categories = [NSMutableArray array];
-    CGFloat _pre_x = 0.0;
-    CGFloat _pre_width = 0.0;
-    CGFloat _x = 0.0;
-    CGFloat _y = 0.0;
     for (NSInteger index = 0; index < 20; index++) {
         Category *_category = [Category randomContentCategory];
         CGSize _itemSize = [SCategoryItem itemSizeWithContent:_category.content Font:k_category_item_content_font ConstrainedToSize:k_category_item_content_constrained_size];
-        _y = ceilf((k_categorycontrol_height - _itemSize.height)/2);
-        _x = _pre_x + _pre_width + k_categorycontrol_item_margin_left;
-        _category.itemFrame = CGRectMake(_x, _y, _itemSize.width, _itemSize.height);
+        _category.itemSize = _itemSize;
         [_categories addObject:_category];
-        _pre_x = _x;
-        _pre_width = _itemSize.width;
     }
     return _categories;
 }
