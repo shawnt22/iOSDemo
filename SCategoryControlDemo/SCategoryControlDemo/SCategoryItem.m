@@ -12,6 +12,7 @@
 
 @interface SCategoryItem()
 @property (nonatomic, assign) CGFloat radius;
+- (UIColor *)currentBGColor;
 @end
 
 @interface SCategoryItem (Draw)
@@ -50,11 +51,15 @@
 }
 @end
 
+#define kCategoryItemStateKeyPath   @"itemState"
+
 @implementation SCategoryItem
 @synthesize radius, innerShadowHeight;
+@synthesize itemState;
 @synthesize reusableIdentifier, itemIndexPath;
-@synthesize bgColor, innerShadowColor, contentColor, contentFont, contentConstrainedToSize, borderWidth, borderColor;
+@synthesize bgColor, bgSelectedColor, innerShadowColor, contentColor, contentFont, contentConstrainedToSize, borderWidth, borderColor;
 @synthesize content;
+@synthesize itemDelegate;
 
 - (SCategoryItem *)defaultItemWithReusableIdentifier:(NSString *)rIdentifier {
     self = [self initWithFrame:CGRectZero ReusableIdentifier:rIdentifier];
@@ -70,6 +75,7 @@
         self.reusableIdentifier = rIdentifier;
         
         self.bgColor = k_category_item_bgcolor_normal_default;
+        self.bgSelectedColor = k_category_item_bgcolor_selected_default;
         self.innerShadowColor = [UIColor colorWithRed:(68/255.0) green:(71/255.0) blue:(77/255.0) alpha:1.0];
         self.borderColor = [UIColor colorWithRed:(25/255.0) green:(25/255.0) blue:(27/255.0) alpha:1.0];
         self.borderWidth = 1.0;
@@ -80,10 +86,18 @@
         self.contentConstrainedToSize = k_category_item_content_constrained_size;
         
         self.innerShadowHeight = 1.0;
+        
+        UITapGestureRecognizer *_tapGesture= [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(responseTapGesture:)];
+        [self addGestureRecognizer:_tapGesture];
+        [_tapGesture release];
+        
+        [self addObserver:self forKeyPath:kCategoryItemStateKeyPath options:NSKeyValueObservingOptionNew context:NULL];
     }
     return self;
 }
 - (void)dealloc {
+    [self removeObserver:self forKeyPath:kCategoryItemStateKeyPath];
+    
     self.bgColor = nil;
     self.innerShadowColor = nil;
     self.contentFont = nil;
@@ -91,6 +105,18 @@
     self.borderColor = nil;
     self.reusableIdentifier = nil;
     [super dealloc];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:kCategoryItemStateKeyPath]) {
+        [self setNeedsDisplay];
+        return;
+    }
+}
+- (void)responseTapGesture:(UITapGestureRecognizer *)tapGesture {
+#warning must to be implemented in custom category item
+    if (self.itemDelegate && [self.itemDelegate respondsToSelector:@selector(categoryItem:responseTapGesture:)]) {
+        [self.itemDelegate categoryItem:self responseTapGesture:tapGesture];
+    }
 }
 - (void)refreshItemWithContent:(NSString *)cnt Frame:(CGRect)frm {
     self.frame = frm;
@@ -100,6 +126,17 @@
 + (CGSize)itemSizeWithContent:(NSString *)cnt Font:(UIFont *)fnt ConstrainedToSize:(CGSize)sze {
     CGSize _cntSize = [cnt sizeWithFont:fnt constrainedToSize:sze lineBreakMode:k_category_item_content_linebreak_mode];
     return CGSizeMake(_cntSize.width+k_category_item_height_default, k_category_item_height_default);
+}
+- (UIColor *)currentBGColor {
+    UIColor *_result = self.bgColor;
+    switch (self.itemState) {
+        case UIControlStateSelected:
+            _result = self.bgSelectedColor;
+            break;
+        default:
+            break;
+    }
+    return _result;
 }
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -113,7 +150,7 @@
     //  inner shadow
     [self drawBackgroundWithContext:context Rect:rect FillColor:self.innerShadowColor];
     //  bg
-    [self drawBackgroundWithContext:context Rect:CGRectMake(rect.origin.x, rect.origin.y+self.innerShadowHeight, rect.size.width, rect.size.height-self.innerShadowHeight) FillColor:self.bgColor];
+    [self drawBackgroundWithContext:context Rect:CGRectMake(rect.origin.x, rect.origin.y+self.innerShadowHeight, rect.size.width, rect.size.height-self.innerShadowHeight) FillColor:[self currentBGColor]];
     //  content
     [self drawContentWithContext:context Rect:CGRectMake(self.radius, 0, rect.size.width-2*self.radius, rect.size.height)];
 }

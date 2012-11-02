@@ -114,7 +114,7 @@
 
 + (NSMutableArray *)testCategories {
     NSMutableArray *_categories = [NSMutableArray array];
-    for (NSInteger index = 0; index < 20; index++) {
+    for (NSInteger index = 0; index < 100; index++) {
         Category *_category = [Category randomContentCategory];
         CGSize _itemSize = [SCategoryItem itemSizeWithContent:_category.content Font:k_category_item_content_font ConstrainedToSize:k_category_item_content_constrained_size];
         _category.itemSize = _itemSize;

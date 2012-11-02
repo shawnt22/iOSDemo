@@ -21,12 +21,12 @@
 
 @protocol SCategoryControlDelegate <NSObject>
 @optional
-
+- (void)categoryControl:(SCategoryControl *)categoryControl didSelectItem:(UIView<SCategoryItemProtocol> *)item;
 @end
 
 #define k_categorycontrol_height 40.0
 #define k_categorycontrol_item_margin_left 5.0
-@interface SCategoryControl : UIView <UIScrollViewDelegate>
+@interface SCategoryControl : UIView <UIScrollViewDelegate, SCategoryItemDelegate>
 @property (nonatomic, assign) id<SCategoryControlDataSource> controlDataSource;
 @property (nonatomic, assign) id<SCategoryControlDelegate> controlDelegate;
 

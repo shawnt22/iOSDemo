@@ -12,6 +12,8 @@
 @property (nonatomic, assign) UIScrollView *controlScrollView;
 @property (nonatomic, retain) NSMutableDictionary *reusableStorage;
 @property (nonatomic, retain) NSMutableArray *activingItems;
+@property (nonatomic, assign) SCategoryIndexPath lastSelectedCategoryItemIndexPath;
+@property (nonatomic, assign) SCategoryIndexPath currentSelectedCategoryItemIndexPath;
 
 - (void)removeItem:(UIView<SCategoryItemProtocol> *)item withIdentifier:(NSString *)identifier fromStorage:(NSMutableDictionary *)storage;
 - (void)addItem:(UIView<SCategoryItemProtocol> *)item withIdentifier:(NSString *)identifier toStorage:(NSMutableDictionary *)storage;
@@ -25,6 +27,7 @@
 - (void)disappearItem:(UIView<SCategoryItemProtocol> *)item;
 
 - (BOOL)isAvalidIndexPath:(SCategoryIndexPath)indexPath;
+- (UIView<SCategoryItemProtocol> *)activingItemWithIndexPath:(SCategoryIndexPath)indexPath;
 
 @end
 
@@ -35,6 +38,7 @@
 - (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath;
 - (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl heightAtIndexPath:(SCategoryIndexPath)indexPath;
 - (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl marginLeftAtIndexPath:(SCategoryIndexPath)indexPath;
+- (void)notifyCategoryControl:(SCategoryControl *)categoryControl didSelectItem:(UIView<SCategoryItemProtocol> *)item;
 @end
 
 @implementation SCategoryControl(Notify)
@@ -66,9 +70,15 @@
     if (self.controlDataSource && [self isAvalidIndexPath:indexPath] && [self.controlDataSource respondsToSelector:@selector(categoryControl:itemAtIndexPath:)]) {
         UIView<SCategoryItemProtocol> *_result = [self.controlDataSource categoryControl:categoryControl itemAtIndexPath:indexPath];
         _result.itemIndexPath = indexPath;
+        _result.itemState = SCategoryIndexPathEqual(self.currentSelectedCategoryItemIndexPath, indexPath) ? UIControlStateSelected : UIControlStateNormal;
         return _result;
     }
     return nil;
+}
+- (void)notifyCategoryControl:(SCategoryControl *)categoryControl didSelectItem:(UIView<SCategoryItemProtocol> *)item {
+    if (self.controlDelegate && [self.controlDelegate respondsToSelector:@selector(categoryControl:didSelectItem:)]) {
+        [self.controlDelegate categoryControl:categoryControl didSelectItem:item];
+    }
 }
 @end
 
@@ -77,6 +87,7 @@
 @synthesize controlScrollView;
 @synthesize controlDataSource, controlDelegate;
 @synthesize reusableStorage, activingItems;
+@synthesize lastSelectedCategoryItemIndexPath, currentSelectedCategoryItemIndexPath;
 
 #pragma mark init dealloc
 - (id)initWithFrame:(CGRect)frame {
@@ -84,6 +95,9 @@
     if (self) {
         self.reusableStorage = [NSMutableDictionary dictionary];
         self.activingItems = [NSMutableArray array];
+        
+        self.lastSelectedCategoryItemIndexPath = SCategoryIndexPathMake(-1);
+        self.currentSelectedCategoryItemIndexPath = SCategoryIndexPathMake(-1);
         
         UIScrollView *_scroll = [[UIScrollView alloc] initWithFrame:self.bounds];
         _scroll.backgroundColor = self.backgroundColor;
@@ -101,6 +115,23 @@
     self.activingItems = nil;
     
     [super dealloc];
+}
+
+#pragma mark category delegate
+- (void)categoryItem:(UIView<SCategoryItemProtocol> *)item responseTapGesture:(UITapGestureRecognizer *)tapGesture {
+    switch (tapGesture.state) {
+        case UIGestureRecognizerStateBegan:
+        {
+            self.lastSelectedCategoryItemIndexPath = self.currentSelectedCategoryItemIndexPath;
+            self.currentSelectedCategoryItemIndexPath = item.itemIndexPath;
+            
+            [self activingItemWithIndexPath:self.lastSelectedCategoryItemIndexPath].itemState = UIControlStateNormal;
+            item.itemState = UIControlStateSelected;
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark item manager
@@ -162,6 +193,12 @@
 }
 - (BOOL)isAvalidIndexPath:(SCategoryIndexPath)indexPath {
     return indexPath.column > -1 && indexPath.column < [self notifyItemNumberOfCategoryControl:self] ? YES : NO;
+}
+- (UIView<SCategoryItemProtocol> *)activingItemWithIndexPath:(SCategoryIndexPath)indexPath {
+    if (indexPath.column >= 0 && indexPath.column < [self.activingItems count]) {
+        return [self.activingItems objectAtIndex:indexPath.column];
+    }
+    return nil;
 }
 
 #pragma mark scroll delegae
