@@ -113,7 +113,6 @@
     }
 }
 - (void)responseTapGesture:(UITapGestureRecognizer *)tapGesture {
-#warning must to be implemented in custom category item
     if (self.itemDelegate && [self.itemDelegate respondsToSelector:@selector(categoryItem:responseTapGesture:)]) {
         [self.itemDelegate categoryItem:self responseTapGesture:tapGesture];
     }

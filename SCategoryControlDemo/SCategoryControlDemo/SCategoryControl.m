@@ -31,6 +31,31 @@
 
 @end
 
+#pragma mark SelectItem
+@interface SCategoryControl(ItemSelected)
+- (void)resetItemState:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath;
+@end
+@implementation SCategoryControl(ItemSelected)
+- (void)resetItemState:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath {
+    item.itemState = SCategoryIndexPathEqual(self.currentSelectedCategoryItemIndexPath, indexPath) ? UIControlStateSelected : UIControlStateNormal;
+}
+- (void)categoryItem:(UIView<SCategoryItemProtocol> *)item responseTapGesture:(UITapGestureRecognizer *)tapGesture {
+    switch (tapGesture.state) {
+        case UIGestureRecognizerStateRecognized:
+        {
+            self.lastSelectedCategoryItemIndexPath = self.currentSelectedCategoryItemIndexPath;
+            self.currentSelectedCategoryItemIndexPath = item.itemIndexPath;
+            
+            [self activingItemWithIndexPath:self.lastSelectedCategoryItemIndexPath].itemState = UIControlStateNormal;
+            item.itemState = UIControlStateSelected;
+        }
+            break;
+        default:
+            break;
+    }
+}
+@end
+
 #pragma mark - Notify
 @interface SCategoryControl(Notify)
 - (UIView<SCategoryItemProtocol> *)notifyCategoryControl:(SCategoryControl *)categoryControl itemAtIndexPath:(SCategoryIndexPath)indexPath;
@@ -70,7 +95,8 @@
     if (self.controlDataSource && [self isAvalidIndexPath:indexPath] && [self.controlDataSource respondsToSelector:@selector(categoryControl:itemAtIndexPath:)]) {
         UIView<SCategoryItemProtocol> *_result = [self.controlDataSource categoryControl:categoryControl itemAtIndexPath:indexPath];
         _result.itemIndexPath = indexPath;
-        _result.itemState = SCategoryIndexPathEqual(self.currentSelectedCategoryItemIndexPath, indexPath) ? UIControlStateSelected : UIControlStateNormal;
+        _result.itemDelegate = self;
+        [self resetItemState:_result indexPath:indexPath];
         return _result;
     }
     return nil;
@@ -81,6 +107,7 @@
     }
 }
 @end
+
 
 #pragma mark - Control
 @implementation SCategoryControl
@@ -115,23 +142,6 @@
     self.activingItems = nil;
     
     [super dealloc];
-}
-
-#pragma mark category delegate
-- (void)categoryItem:(UIView<SCategoryItemProtocol> *)item responseTapGesture:(UITapGestureRecognizer *)tapGesture {
-    switch (tapGesture.state) {
-        case UIGestureRecognizerStateBegan:
-        {
-            self.lastSelectedCategoryItemIndexPath = self.currentSelectedCategoryItemIndexPath;
-            self.currentSelectedCategoryItemIndexPath = item.itemIndexPath;
-            
-            [self activingItemWithIndexPath:self.lastSelectedCategoryItemIndexPath].itemState = UIControlStateNormal;
-            item.itemState = UIControlStateSelected;
-        }
-            break;
-        default:
-            break;
-    }
 }
 
 #pragma mark item manager
@@ -195,10 +205,14 @@
     return indexPath.column > -1 && indexPath.column < [self notifyItemNumberOfCategoryControl:self] ? YES : NO;
 }
 - (UIView<SCategoryItemProtocol> *)activingItemWithIndexPath:(SCategoryIndexPath)indexPath {
-    if (indexPath.column >= 0 && indexPath.column < [self.activingItems count]) {
-        return [self.activingItems objectAtIndex:indexPath.column];
+    UIView<SCategoryItemProtocol> *_result = nil;
+    for (UIView<SCategoryItemProtocol> *_item in self.activingItems) {
+        if (SCategoryIndexPathEqual(indexPath, _item.itemIndexPath)) {
+            _result = _item;
+            break;
+        }
     }
-    return nil;
+    return _result;
 }
 
 #pragma mark scroll delegae
@@ -302,4 +316,6 @@
 }
 
 @end
+
+
 
