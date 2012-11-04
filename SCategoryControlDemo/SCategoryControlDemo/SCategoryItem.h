@@ -20,6 +20,14 @@ NS_INLINE SCategoryIndexPath SCategoryIndexPathMake(NSInteger _column) {
 NS_INLINE BOOL SCategoryIndexPathEqual(SCategoryIndexPath indexPath, SCategoryIndexPath annother) {
     return indexPath.column == annother.column ? YES : NO;
 }
+NS_INLINE NSString *NSStringFromSCategoryIndexPath(SCategoryIndexPath indexPath) {
+    return [NSString stringWithFormat:@"%d", indexPath.column];
+}
+NS_INLINE SCategoryIndexPath SCategoryIndexPathFromNSString(NSString *string) {
+    SCategoryIndexPath indexPath;
+    indexPath.column = [string integerValue];
+    return indexPath;
+}
 
 @protocol SCategoryItemDelegate;
 @protocol SCategoryItemProtocol <NSObject>

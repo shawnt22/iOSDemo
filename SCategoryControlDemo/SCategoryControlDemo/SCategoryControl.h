@@ -32,6 +32,7 @@
 
 - (UIView<SCategoryItemProtocol> *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
 - (void)reloadControl;
+- (void)selectItemAtIndexPath:(SCategoryIndexPath)indexPath Animated:(BOOL)animated;
 
 @end
 

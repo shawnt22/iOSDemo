@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCategoryControl.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, SCategoryControlDataSource>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, SCategoryControlDataSource, SCategoryControlDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

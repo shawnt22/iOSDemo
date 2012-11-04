@@ -10,9 +10,11 @@
 
 @interface AppDelegate()
 @property (nonatomic, retain) NSMutableArray *categories;
+@property (nonatomic, assign) SCategoryControl *theCategoryControl;
 @end
 @implementation AppDelegate
 @synthesize categories;
+@synthesize theCategoryControl;
 
 - (void)dealloc
 {
@@ -33,12 +35,32 @@
     SCategoryControl *_control = [[SCategoryControl alloc] initWithFrame:CGRectMake(10, 100, self.window.bounds.size.width-20, k_categorycontrol_height)];
     _control.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     _control.controlDataSource = self;
+    _control.controlDelegate = self;
     [self.window addSubview:_control];
+    self.theCategoryControl = _control;
     [_control release];
     
     [_control reloadControl];
     
+    UIButton *_btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    _btn.frame = CGRectMake(ceilf((self.window.bounds.size.width-160)/2), _control.frame.origin.y+_control.frame.size.height+40, 160, 44);
+    [_btn setTitle:@"select item" forState:UIControlStateNormal];
+    [_btn addTarget:self action:@selector(selectItemAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.window addSubview:_btn];
+    
     return YES;
+}
+
+#pragma mark select item
+- (void)selectItemAction:(id)sender {
+    [self.theCategoryControl selectItemAtIndexPath:SCategoryIndexPathMake(10) Animated:YES];
+}
+
+#pragma mark category control delegate
+- (void)categoryControl:(SCategoryControl *)categoryControl didSelectItem:(UIView<SCategoryItemProtocol> *)item {
+    UIAlertView *_alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"Select item at index path : %@", NSStringFromSCategoryIndexPath(item.itemIndexPath)] delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
+    [_alert show];
+    [_alert release];
 }
 
 #pragma mark category control datasource

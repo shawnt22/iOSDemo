@@ -26,34 +26,11 @@
 - (void)appearItem:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath;
 - (void)disappearItem:(UIView<SCategoryItemProtocol> *)item;
 
+- (void)performSelectItemAtIndexPath:(SCategoryIndexPath)indexPath;
+
 - (BOOL)isAvalidIndexPath:(SCategoryIndexPath)indexPath;
 - (UIView<SCategoryItemProtocol> *)activingItemWithIndexPath:(SCategoryIndexPath)indexPath;
 
-@end
-
-#pragma mark SelectItem
-@interface SCategoryControl(ItemSelected)
-- (void)resetItemState:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath;
-@end
-@implementation SCategoryControl(ItemSelected)
-- (void)resetItemState:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath {
-    item.itemState = SCategoryIndexPathEqual(self.currentSelectedCategoryItemIndexPath, indexPath) ? UIControlStateSelected : UIControlStateNormal;
-}
-- (void)categoryItem:(UIView<SCategoryItemProtocol> *)item responseTapGesture:(UITapGestureRecognizer *)tapGesture {
-    switch (tapGesture.state) {
-        case UIGestureRecognizerStateRecognized:
-        {
-            self.lastSelectedCategoryItemIndexPath = self.currentSelectedCategoryItemIndexPath;
-            self.currentSelectedCategoryItemIndexPath = item.itemIndexPath;
-            
-            [self activingItemWithIndexPath:self.lastSelectedCategoryItemIndexPath].itemState = UIControlStateNormal;
-            item.itemState = UIControlStateSelected;
-        }
-            break;
-        default:
-            break;
-    }
-}
 @end
 
 #pragma mark - Notify
@@ -64,6 +41,36 @@
 - (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl heightAtIndexPath:(SCategoryIndexPath)indexPath;
 - (CGFloat)notifyCategoryControl:(SCategoryControl *)categoryControl marginLeftAtIndexPath:(SCategoryIndexPath)indexPath;
 - (void)notifyCategoryControl:(SCategoryControl *)categoryControl didSelectItem:(UIView<SCategoryItemProtocol> *)item;
+@end
+
+#pragma mark SelectItem
+@interface SCategoryControl(ItemSelected)
+- (void)resetItemState:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath;
+- (void)resetStateAndNotifySelectWithItem:(UIView<SCategoryItemProtocol> *)item;
+@end
+@implementation SCategoryControl(ItemSelected)
+- (void)resetItemState:(UIView<SCategoryItemProtocol> *)item indexPath:(SCategoryIndexPath)indexPath {
+    item.itemState = SCategoryIndexPathEqual(self.currentSelectedCategoryItemIndexPath, indexPath) ? UIControlStateSelected : UIControlStateNormal;
+}
+- (void)resetStateAndNotifySelectWithItem:(UIView<SCategoryItemProtocol> *)item {
+    self.lastSelectedCategoryItemIndexPath = self.currentSelectedCategoryItemIndexPath;
+    self.currentSelectedCategoryItemIndexPath = item.itemIndexPath;
+    
+    [self activingItemWithIndexPath:self.lastSelectedCategoryItemIndexPath].itemState = UIControlStateNormal;
+    item.itemState = UIControlStateSelected;
+    [self notifyCategoryControl:self didSelectItem:item];
+}
+- (void)categoryItem:(UIView<SCategoryItemProtocol> *)item responseTapGesture:(UITapGestureRecognizer *)tapGesture {
+    switch (tapGesture.state) {
+        case UIGestureRecognizerStateRecognized:
+        {
+            [self resetStateAndNotifySelectWithItem:item];
+        }
+            break;
+        default:
+            break;
+    }
+}
 @end
 
 @implementation SCategoryControl(Notify)
@@ -213,6 +220,25 @@
         }
     }
     return _result;
+}
+- (void)selectItemAtIndexPath:(SCategoryIndexPath)indexPath Animated:(BOOL)animated {
+    CGRect _itemFrame = [self itemFrameAtIndexPath:indexPath];
+    [self.controlScrollView scrollRectToVisible:_itemFrame animated:animated];
+    
+    if (animated) {
+        [self performSelector:@selector(delayPerformSelectItemAtIndexPathValue:) withObject:NSStringFromSCategoryIndexPath(indexPath) afterDelay:0.5];
+    } else {
+        [self performSelectItemAtIndexPath:indexPath];
+    }
+}
+- (void)delayPerformSelectItemAtIndexPathValue:(NSString *)indexPathValue {
+    [self performSelectItemAtIndexPath:SCategoryIndexPathFromNSString(indexPathValue)];
+}
+- (void)performSelectItemAtIndexPath:(SCategoryIndexPath)indexPath {
+    UIView<SCategoryItemProtocol> *_item = [self activingItemWithIndexPath:indexPath];
+    if (_item) {
+        [self resetStateAndNotifySelectWithItem:_item];
+    }
 }
 
 #pragma mark scroll delegae
