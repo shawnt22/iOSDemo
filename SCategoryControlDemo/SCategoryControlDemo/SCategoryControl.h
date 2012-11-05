@@ -29,6 +29,8 @@
 @interface SCategoryControl : UIView <UIScrollViewDelegate, SCategoryItemDelegate>
 @property (nonatomic, assign) id<SCategoryControlDataSource> controlDataSource;
 @property (nonatomic, assign) id<SCategoryControlDelegate> controlDelegate;
+
+@property (nonatomic, assign) SCategoryIndexPath currentSelectedCategoryItemIndexPath;
 @property (nonatomic, assign) CGFloat horizontalMargin;
 
 - (UIView<SCategoryItemProtocol> *)dequeueReusableItemWithIdentifier:(NSString *)identifier;

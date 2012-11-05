@@ -13,7 +13,6 @@
 @property (nonatomic, retain) NSMutableDictionary *reusableStorage;
 @property (nonatomic, retain) NSMutableArray *activingItems;
 @property (nonatomic, assign) SCategoryIndexPath lastSelectedCategoryItemIndexPath;
-@property (nonatomic, assign) SCategoryIndexPath currentSelectedCategoryItemIndexPath;
 
 - (void)removeItem:(UIView<SCategoryItemProtocol> *)item withIdentifier:(NSString *)identifier fromStorage:(NSMutableDictionary *)storage;
 - (void)addItem:(UIView<SCategoryItemProtocol> *)item withIdentifier:(NSString *)identifier toStorage:(NSMutableDictionary *)storage;
@@ -133,8 +132,8 @@
         self.reusableStorage = [NSMutableDictionary dictionary];
         self.activingItems = [NSMutableArray array];
         
-        self.lastSelectedCategoryItemIndexPath = SCategoryIndexPathMake(-1);
-        self.currentSelectedCategoryItemIndexPath = SCategoryIndexPathMake(-1);
+        self.lastSelectedCategoryItemIndexPath = SCategoryIndexPathCreateInvalidIndexPath();
+        self.currentSelectedCategoryItemIndexPath = SCategoryIndexPathCreateInvalidIndexPath();
         
         UIScrollView *_scroll = [[UIScrollView alloc] initWithFrame:self.bounds];
         _scroll.backgroundColor = self.backgroundColor;
