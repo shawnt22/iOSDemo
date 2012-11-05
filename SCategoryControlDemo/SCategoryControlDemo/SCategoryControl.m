@@ -122,11 +122,14 @@
 @synthesize controlDataSource, controlDelegate;
 @synthesize reusableStorage, activingItems;
 @synthesize lastSelectedCategoryItemIndexPath, currentSelectedCategoryItemIndexPath;
+@synthesize horizontalMargin;
 
 #pragma mark init dealloc
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.horizontalMargin = 5.0;
+        
         self.reusableStorage = [NSMutableDictionary dictionary];
         self.activingItems = [NSMutableArray array];
         
@@ -319,8 +322,9 @@
     for (NSInteger index = 0; index < [self notifyItemNumberOfCategoryControl:self]; index++) {
         SCategoryIndexPath _indexPath = SCategoryIndexPathMake(index);
         CGFloat _marginLeft = [self notifyCategoryControl:self marginLeftAtIndexPath:_indexPath];
-        _contentSize.width += (index == 0 ? 0 : _marginLeft) + [self notifyCategoryControl:self widthAtIndexPath:_indexPath];
+        _contentSize.width += (index == 0 ? self.horizontalMargin : _marginLeft) + [self notifyCategoryControl:self widthAtIndexPath:_indexPath];
     }
+    _contentSize.width += self.horizontalMargin;
     _contentSize.width = _contentSize.width > self.controlScrollView.bounds.size.width ? _contentSize.width : self.controlScrollView.bounds.size.width + 1;
     _contentSize.height = self.controlScrollView.bounds.size.height;
     return _contentSize;
@@ -330,13 +334,13 @@
     CGFloat _height = [self notifyCategoryControl:self heightAtIndexPath:indexPath];
     CGFloat _y = ceilf((self.controlScrollView.bounds.size.height - _height)/2);
     
-    CGFloat _x = 0.0;
+    CGFloat _x = self.horizontalMargin;
     for (NSInteger index = 0; index < indexPath.column; index++) {
         SCategoryIndexPath _indexPath = SCategoryIndexPathMake(index);
         CGFloat _mleft = [self notifyCategoryControl:self marginLeftAtIndexPath:_indexPath];
         _x += _mleft + [self notifyCategoryControl:self widthAtIndexPath:_indexPath];
     }
-    _x = _x > 0.0 ? _x : 0.0;
+    _x = _x > self.horizontalMargin ? _x : self.horizontalMargin;
     
     return CGRectMake(_x, _y, _width, _height);
 }
