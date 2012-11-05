@@ -16,6 +16,7 @@
 - (NSInteger)itemNumberOfCategoryControl:(SCategoryControl *)categoryControl;
 - (CGFloat)categoryControl:(SCategoryControl *)categoryControl widthAtIndexPath:(SCategoryIndexPath)indexPath;
 - (CGFloat)categoryControl:(SCategoryControl *)categoryControl heightAtIndexPath:(SCategoryIndexPath)indexPath;
+@optional
 - (CGFloat)categoryControl:(SCategoryControl *)categoryControl marginLeftAtIndexPath:(SCategoryIndexPath)indexPath;
 @end
 
