@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
-@interface RootViewController : UIViewController
+@interface RootViewController : UIViewController 
 
 @end
