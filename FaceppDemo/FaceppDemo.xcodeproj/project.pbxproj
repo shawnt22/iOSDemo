@@ -33,6 +33,13 @@
 		297E38D218EA738700C0A2B5 /* FaceppTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 297E38C318EA738700C0A2B5 /* FaceppTrainer.m */; };
 		297E38D318EA738700C0A2B5 /* FaceppError.m in Sources */ = {isa = PBXBuildFile; fileRef = 297E38C618EA738700C0A2B5 /* FaceppError.m */; };
 		297E38D418EA738700C0A2B5 /* FaceppResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 297E38C818EA738700C0A2B5 /* FaceppResult.m */; };
+		297E38D718EA745400C0A2B5 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 297E38D618EA745400C0A2B5 /* RootViewController.m */; };
+		29AD7D3118EAAB5C00B4FA34 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29AD7D3018EAAB5C00B4FA34 /* AVFoundation.framework */; };
+		29AD7D3418EAAB7C00B4FA34 /* SVideoCaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D3318EAAB7C00B4FA34 /* SVideoCaptureManager.m */; };
+		29AD7D3618EAC85E00B4FA34 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29AD7D3518EAC85E00B4FA34 /* CoreMedia.framework */; };
+		29AD7D3918EACDCA00B4FA34 /* FDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D3818EACDCA00B4FA34 /* FDetectViewController.m */; };
+		29AD7D3C18EACE5400B4FA34 /* FLocalDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D3B18EACE5400B4FA34 /* FLocalDetectViewController.m */; };
+		29AD7D3F18EAD6D300B4FA34 /* FVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D3E18EAD6D300B4FA34 /* FVideoViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +97,18 @@
 		297E38C618EA738700C0A2B5 /* FaceppError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceppError.m; sourceTree = "<group>"; };
 		297E38C718EA738700C0A2B5 /* FaceppResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceppResult.h; sourceTree = "<group>"; };
 		297E38C818EA738700C0A2B5 /* FaceppResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceppResult.m; sourceTree = "<group>"; };
+		297E38D518EA745400C0A2B5 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		297E38D618EA745400C0A2B5 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		29AD7D3018EAAB5C00B4FA34 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		29AD7D3218EAAB7C00B4FA34 /* SVideoCaptureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVideoCaptureManager.h; sourceTree = "<group>"; };
+		29AD7D3318EAAB7C00B4FA34 /* SVideoCaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVideoCaptureManager.m; sourceTree = "<group>"; };
+		29AD7D3518EAC85E00B4FA34 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		29AD7D3718EACDCA00B4FA34 /* FDetectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDetectViewController.h; sourceTree = "<group>"; };
+		29AD7D3818EACDCA00B4FA34 /* FDetectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDetectViewController.m; sourceTree = "<group>"; };
+		29AD7D3A18EACE5400B4FA34 /* FLocalDetectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLocalDetectViewController.h; sourceTree = "<group>"; };
+		29AD7D3B18EACE5400B4FA34 /* FLocalDetectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLocalDetectViewController.m; sourceTree = "<group>"; };
+		29AD7D3D18EAD6D300B4FA34 /* FVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FVideoViewController.h; sourceTree = "<group>"; };
+		29AD7D3E18EAD6D300B4FA34 /* FVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FVideoViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +116,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29AD7D3618EAC85E00B4FA34 /* CoreMedia.framework in Frameworks */,
+				29AD7D3118EAAB5C00B4FA34 /* AVFoundation.framework in Frameworks */,
 				297E387B18EA71EA00C0A2B5 /* CoreGraphics.framework in Frameworks */,
 				297E387D18EA71EA00C0A2B5 /* UIKit.framework in Frameworks */,
 				297E38AD18EA734700C0A2B5 /* libFaceppLocalDetector.a in Frameworks */,
@@ -139,6 +160,8 @@
 		297E387718EA71EA00C0A2B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29AD7D3518EAC85E00B4FA34 /* CoreMedia.framework */,
+				29AD7D3018EAAB5C00B4FA34 /* AVFoundation.framework */,
 				297E387818EA71EA00C0A2B5 /* Foundation.framework */,
 				297E387A18EA71EA00C0A2B5 /* CoreGraphics.framework */,
 				297E387C18EA71EA00C0A2B5 /* UIKit.framework */,
@@ -156,6 +179,16 @@
 				297E388818EA71EA00C0A2B5 /* AppDelegate.m */,
 				297E388A18EA71EA00C0A2B5 /* Images.xcassets */,
 				297E387F18EA71EA00C0A2B5 /* Supporting Files */,
+				297E38D518EA745400C0A2B5 /* RootViewController.h */,
+				297E38D618EA745400C0A2B5 /* RootViewController.m */,
+				29AD7D3218EAAB7C00B4FA34 /* SVideoCaptureManager.h */,
+				29AD7D3318EAAB7C00B4FA34 /* SVideoCaptureManager.m */,
+				29AD7D3718EACDCA00B4FA34 /* FDetectViewController.h */,
+				29AD7D3818EACDCA00B4FA34 /* FDetectViewController.m */,
+				29AD7D3A18EACE5400B4FA34 /* FLocalDetectViewController.h */,
+				29AD7D3B18EACE5400B4FA34 /* FLocalDetectViewController.m */,
+				29AD7D3D18EAD6D300B4FA34 /* FVideoViewController.h */,
+				29AD7D3E18EAD6D300B4FA34 /* FVideoViewController.m */,
 			);
 			path = FaceppDemo;
 			sourceTree = "<group>";
@@ -344,12 +377,16 @@
 			files = (
 				297E38CB18EA738700C0A2B5 /* FaceppDetection.m in Sources */,
 				297E38D218EA738700C0A2B5 /* FaceppTrainer.m in Sources */,
+				297E38D718EA745400C0A2B5 /* RootViewController.m in Sources */,
 				297E38D418EA738700C0A2B5 /* FaceppResult.m in Sources */,
 				297E38D018EA738700C0A2B5 /* FaceppPerson.m in Sources */,
 				297E38AC18EA734700C0A2B5 /* FaceppDetection+LocalResultUploader.m in Sources */,
+				29AD7D3918EACDCA00B4FA34 /* FDetectViewController.m in Sources */,
 				297E38CF18EA738700C0A2B5 /* FaceppInfo.m in Sources */,
 				297E38D318EA738700C0A2B5 /* FaceppError.m in Sources */,
+				29AD7D3F18EAD6D300B4FA34 /* FVideoViewController.m in Sources */,
 				297E38CC18EA738700C0A2B5 /* FaceppFaceset.m in Sources */,
+				29AD7D3C18EACE5400B4FA34 /* FLocalDetectViewController.m in Sources */,
 				297E388918EA71EA00C0A2B5 /* AppDelegate.m in Sources */,
 				297E38CD18EA738700C0A2B5 /* FaceppGroup.m in Sources */,
 				297E38CA18EA738700C0A2B5 /* FaceppClient.m in Sources */,
@@ -357,6 +394,7 @@
 				297E388518EA71EA00C0A2B5 /* main.m in Sources */,
 				297E38D118EA738700C0A2B5 /* FaceppRecognition.m in Sources */,
 				297E38C918EA738700C0A2B5 /* FaceppAPI.m in Sources */,
+				29AD7D3418EAAB7C00B4FA34 /* SVideoCaptureManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,6 +599,7 @@
 				297E38A318EA71EA00C0A2B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		297E38A418EA71EA00C0A2B5 /* Build configuration list for PBXNativeTarget "FaceppDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -569,6 +608,7 @@
 				297E38A618EA71EA00C0A2B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
