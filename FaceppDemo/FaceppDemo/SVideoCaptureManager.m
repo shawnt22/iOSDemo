@@ -11,6 +11,8 @@
 @interface SVideoCaptureManager ()
 @property (nonatomic, strong) AVCaptureDevice *device;
 @property (nonatomic, strong) AVCaptureSession *session;
+@property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
 @end
 
 @implementation SVideoCaptureManager
@@ -37,6 +39,8 @@
 }
 - (AVCaptureSession *)videoSessionWithPosition:(AVCaptureDevicePosition)position
 {
+    AVCaptureSession *session = [[AVCaptureSession alloc] init];
+    
     //  input
     NSError *error = nil;
     AVCaptureDevice *device = [SVideoCaptureManager videoCaptureDeviceWithPosition:position];
@@ -47,24 +51,35 @@
     if (error) {
         return nil;
     }
-    
-    //  output
-    AVCaptureVideoDataOutput *videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-    videoOutput.alwaysDiscardsLateVideoFrames = YES;
-    videoOutput.videoSettings = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)}; //  kCMPixelFormat_32BGRA
-    
-    //  session
-    AVCaptureSession *session = [[AVCaptureSession alloc] init];
     if ([session canAddInput:deviceInput]) {
         [session addInput:deviceInput];
     } else {
         return nil;
     }
-    if ([session canAddOutput:videoOutput]) {
-        [session addOutput:videoOutput];
-    } else {
-        return nil;
+    
+    //  output
+    if (self.supportedOutput == SVideoCaptureManagerVideoDataOutput) {
+        AVCaptureVideoDataOutput *videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+        videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
+        videoDataOutput.videoSettings = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)}; //  kCMPixelFormat_32BGRA
+        if ([session canAddOutput:videoDataOutput]) {
+            [session addOutput:videoDataOutput];
+            self.videoDataOutput = videoDataOutput;
+        } else {
+            return nil;
+        }
     }
+    if (self.supportedOutput == SVideoCaptureManagerStillImageOutput) {
+        AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+        stillImageOutput.outputSettings = @{AVVideoCodecKey : AVVideoCodecJPEG};
+        if ([session canAddOutput:stillImageOutput]) {
+            [session addOutput:stillImageOutput];
+            self.stillImageOutput = stillImageOutput;
+        } else {
+            return nil;
+        }
+    }
+    
     [self setSessionPreset:AVAssetExportPresetMediumQuality];
     
     self.device = device;
@@ -86,12 +101,9 @@
 - (BOOL)setVideoDataOutputSampleBufferDelegate:(id<AVCaptureVideoDataOutputSampleBufferDelegate>)delegate
 {
     BOOL result = NO;
-    for (AVCaptureOutput *output in self.session.outputs) {
-        if ([output isKindOfClass:[AVCaptureVideoDataOutput class]]) {
-            AVCaptureVideoDataOutput *dataOutput = (AVCaptureVideoDataOutput *)output;
-            [dataOutput setSampleBufferDelegate:delegate queue:dispatch_get_main_queue()];
-            result = YES;
-        }
+    if (self.videoDataOutput) {
+        [self.videoDataOutput setSampleBufferDelegate:delegate queue:dispatch_get_main_queue()];
+        result = YES;
     }
     return result;
 }

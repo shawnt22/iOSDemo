@@ -10,9 +10,6 @@
 #import "RootViewController.h"
 #import "FaceppAPI.h"
 
-extern NSString *kFaceppApiKey;
-extern NSString *kFaceppApiSecret;
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

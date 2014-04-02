@@ -8,7 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *kFaceppApiKey;
+extern NSString *kFaceppApiSecret;
+
 @interface FHelper : NSObject
+
++ (UIAlertView *)alertWithTitle:(NSString *)title Message:(NSString *)message Delegate:(id<UIAlertViewDelegate>)delegate;
 
 @end
 

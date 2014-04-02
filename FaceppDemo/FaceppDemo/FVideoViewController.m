@@ -19,6 +19,7 @@
     self = [super init];
     if (self) {
         self.videoCaptureManager = [[SVideoCaptureManager alloc] init];
+        self.videoCaptureManager.supportedOutput = SVideoCaptureManagerVideoDataOutput;
     }
     return self;
 }

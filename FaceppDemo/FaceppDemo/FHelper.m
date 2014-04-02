@@ -10,6 +10,12 @@
 
 @implementation FHelper
 
++ (UIAlertView *)alertWithTitle:(NSString *)title Message:(NSString *)message Delegate:(id<UIAlertViewDelegate>)delegate
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:delegate cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    return alert;
+}
 
 @end
 
