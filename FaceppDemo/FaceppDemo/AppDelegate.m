@@ -8,6 +8,10 @@
 
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import "FaceppAPI.h"
+
+extern NSString *kFaceppApiKey;
+extern NSString *kFaceppApiSecret;
 
 @implementation AppDelegate
 
@@ -16,6 +20,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    [FaceppAPI initWithApiKey:kFaceppApiKey andApiSecret:kFaceppApiSecret andRegion:APIServerRegionCN];
+    [FaceppAPI setDebugMode:YES];
     
     RootViewController *root = [[RootViewController alloc] init];
     UINavigationController *navigation = [[RootNavigationController alloc] initWithRootViewController:root];
@@ -54,3 +61,6 @@
 }
 
 @end
+
+const NSString *kFaceppApiKey = @"f9208cd3c2c09deaa4f507b847f32ba6";
+const NSString *kFaceppApiSecret = @"TqCNFnutt6mOirOiC6LH0lKfSSw4Wc3I";

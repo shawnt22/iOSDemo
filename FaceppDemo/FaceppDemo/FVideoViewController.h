@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SVideoCaptureManager.h"
+#import "FaceppAPI.h"
 
 @interface FVideoViewController : UIViewController
 @property (nonatomic, readonly) SVideoCaptureManager *videoCaptureManager;

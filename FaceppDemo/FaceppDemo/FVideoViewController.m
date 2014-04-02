@@ -8,7 +8,7 @@
 
 #import "FVideoViewController.h"
 
-@interface FVideoViewController ()
+@interface FVideoViewController () <AVCaptureVideoDataOutputSampleBufferDelegate>
 @property (nonatomic, strong) SVideoCaptureManager *videoCaptureManager;
 @end
 
@@ -24,6 +24,7 @@
 }
 - (void)dealloc
 {
+    [self.videoCaptureManager setVideoDataOutputSampleBufferDelegate:nil];
     if ([self.videoCaptureManager.session isRunning]) {
         [self.videoCaptureManager.session stopRunning];
     }
@@ -37,7 +38,20 @@
     [self.view.layer addSublayer:previewLayer];
     self.view.layer.masksToBounds = YES;
     
+    [self.videoCaptureManager setVideoDataOutputSampleBufferDelegate:self];
+    
     [self.videoCaptureManager.session startRunning];
 }
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
+{
+    return;
+    NSData *data = [NSData dataFromCMSampleBufferRef:sampleBuffer];
+    FaceppResult *result = [[FaceppAPI detection] detectWithURL:nil orImageData:data mode:FaceppDetectionModeNormal attribute:FaceppDetectionAttributeRace|FaceppDetectionAttributeSmiling tag:nil async:NO];
+    if (result.success) {
+        
+    }
+}
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
+{}
 
 @end

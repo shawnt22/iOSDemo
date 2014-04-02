@@ -40,6 +40,7 @@
 		29AD7D3918EACDCA00B4FA34 /* FDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D3818EACDCA00B4FA34 /* FDetectViewController.m */; };
 		29AD7D3C18EACE5400B4FA34 /* FLocalDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D3B18EACE5400B4FA34 /* FLocalDetectViewController.m */; };
 		29AD7D3F18EAD6D300B4FA34 /* FVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D3E18EAD6D300B4FA34 /* FVideoViewController.m */; };
+		29AD7D4218EBBF6100B4FA34 /* FHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AD7D4118EBBF6100B4FA34 /* FHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,8 @@
 		29AD7D3B18EACE5400B4FA34 /* FLocalDetectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLocalDetectViewController.m; sourceTree = "<group>"; };
 		29AD7D3D18EAD6D300B4FA34 /* FVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FVideoViewController.h; sourceTree = "<group>"; };
 		29AD7D3E18EAD6D300B4FA34 /* FVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FVideoViewController.m; sourceTree = "<group>"; };
+		29AD7D4018EBBF6100B4FA34 /* FHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHelper.h; sourceTree = "<group>"; };
+		29AD7D4118EBBF6100B4FA34 /* FHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +192,8 @@
 				29AD7D3B18EACE5400B4FA34 /* FLocalDetectViewController.m */,
 				29AD7D3D18EAD6D300B4FA34 /* FVideoViewController.h */,
 				29AD7D3E18EAD6D300B4FA34 /* FVideoViewController.m */,
+				29AD7D4018EBBF6100B4FA34 /* FHelper.h */,
+				29AD7D4118EBBF6100B4FA34 /* FHelper.m */,
 			);
 			path = FaceppDemo;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 				297E38CA18EA738700C0A2B5 /* FaceppClient.m in Sources */,
 				297E38CE18EA738700C0A2B5 /* FaceppGrouping.m in Sources */,
 				297E388518EA71EA00C0A2B5 /* main.m in Sources */,
+				29AD7D4218EBBF6100B4FA34 /* FHelper.m in Sources */,
 				297E38D118EA738700C0A2B5 /* FaceppRecognition.m in Sources */,
 				297E38C918EA738700C0A2B5 /* FaceppAPI.m in Sources */,
 				29AD7D3418EAAB7C00B4FA34 /* SVideoCaptureManager.m in Sources */,

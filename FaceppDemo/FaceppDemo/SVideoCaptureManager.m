@@ -15,6 +15,19 @@
 
 @implementation SVideoCaptureManager
 
+- (void)dealloc
+{
+    [self.session beginConfiguration];
+    NSArray *inputs = self.session.inputs;
+    for (AVCaptureInput *input in inputs) {
+        [self.session removeInput:input];
+    }
+    NSArray *outputs = self.session.outputs;
+    for (AVCaptureOutput *output in outputs) {
+        [self.session removeOutput:output];
+    }
+    [self.session commitConfiguration];
+}
 - (AVCaptureVideoPreviewLayer *)videoPreviewLayerWithDevicePosition:(AVCaptureDevicePosition)position
 {
     AVCaptureVideoPreviewLayer *prelayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:[self videoSessionWithPosition:position]];
@@ -52,7 +65,7 @@
     } else {
         return nil;
     }
-    [self setSessionPreset:AVCaptureSessionPresetMedium];
+    [self setSessionPreset:AVAssetExportPresetMediumQuality];
     
     self.device = device;
     self.session = session;
@@ -66,6 +79,18 @@
         if (device.position == position) {
             result = device;
             break;
+        }
+    }
+    return result;
+}
+- (BOOL)setVideoDataOutputSampleBufferDelegate:(id<AVCaptureVideoDataOutputSampleBufferDelegate>)delegate
+{
+    BOOL result = NO;
+    for (AVCaptureOutput *output in self.session.outputs) {
+        if ([output isKindOfClass:[AVCaptureVideoDataOutput class]]) {
+            AVCaptureVideoDataOutput *dataOutput = (AVCaptureVideoDataOutput *)output;
+            [dataOutput setSampleBufferDelegate:delegate queue:dispatch_get_main_queue()];
+            result = YES;
         }
     }
     return result;

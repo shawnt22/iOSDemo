@@ -7,6 +7,7 @@
 //
 
 #import "FDetectViewController.h"
+#import "FaceppAPI.h"
 
 @interface FDetectViewController ()
 

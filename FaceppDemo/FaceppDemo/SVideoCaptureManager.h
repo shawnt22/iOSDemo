@@ -14,5 +14,6 @@
 @property (nonatomic, readonly) AVCaptureSession *session;
 
 - (AVCaptureVideoPreviewLayer *)videoPreviewLayerWithDevicePosition:(AVCaptureDevicePosition)position;
+- (BOOL)setVideoDataOutputSampleBufferDelegate:(id<AVCaptureVideoDataOutputSampleBufferDelegate>)delegate;  //  do not call before videoPreviewLayerWithDevicePosition:
 
 @end
